@@ -4,7 +4,6 @@ import { View } from "react-native";
 import React from "react";
 import Navigation from "./src/navigation/Navigation";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import ResetPassword from "./src/screens/ResetPassword";
 
 export default function App() {
   return (

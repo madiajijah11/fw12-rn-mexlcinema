@@ -1,6 +1,6 @@
 import { View, Alert, KeyboardAvoidingView, Platform } from "react-native";
 import Logo from "../../assets/mexl_cinema-1-edit-removebg.png";
-import { Input, Text, Button, Image } from "@rneui/base";
+import { Input, Text, Button, Image } from "@rneui/themed";
 import { useForm, Controller } from "react-hook-form";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
@@ -9,6 +9,7 @@ import YupPassword from "yup-password";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 YupPassword(Yup);
 
@@ -39,6 +40,7 @@ const Register = () => {
   };
 
   const navigation = useNavigation();
+
   const {
     control,
     handleSubmit,
@@ -62,150 +64,153 @@ const Register = () => {
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <ScrollView style={{ padding: 20 }}>
-        <View
-          style={{
-            paddingLeft: 10,
-            marginBottom: 20,
-          }}
-        >
-          <Image
-            source={Logo}
-            containerStyle={{
-              width: "100%",
-              height: 100,
-            }}
-          />
-          <Text
+      <SafeAreaView>
+        <ScrollView style={{ padding: 20 }}>
+          <View
             style={{
-              fontSize: 26,
-              fontWeight: "bold",
+              paddingLeft: 10,
+              marginBottom: 20,
             }}
           >
-            Sign Up
-          </Text>
-          <Text>Fill your additional details</Text>
-        </View>
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              label="First Name"
-              placeholder="Write your first name"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              errorMessage={errors.firstName && errors.firstName.message}
-            />
-          )}
-          name="firstName"
-        />
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              label="Last Name"
-              placeholder="Write your last name"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              errorMessage={errors.lastName && errors.lastName.message}
-            />
-          )}
-          name="lastName"
-        />
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              label="Phone Number"
-              placeholder="Write your phone number"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              errorMessage={errors.phoneNumber && errors.phoneNumber.message}
-            />
-          )}
-          name="phoneNumber"
-        />
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              label="Email"
-              placeholder="Write your email"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              errorMessage={errors.email && errors.email.message}
-            />
-          )}
-          name="email"
-        />
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              label="Password"
-              placeholder="Write your password"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              errorMessage={errors.password && errors.password.message}
-              secureTextEntry={showPassword ? false : true}
-              rightIcon={
-                showPassword ? (
-                  <Ionicons
-                    name="eye-off"
-                    size={24}
-                    color="black"
-                    onPress={() => {
-                      handleShowPassword();
-                    }}
-                  />
-                ) : (
-                  <Ionicons
-                    name="eye"
-                    size={24}
-                    color="black"
-                    onPress={() => {
-                      handleShowPassword();
-                    }}
-                  />
-                )
-              }
-            />
-          )}
-          name="password"
-        />
-        <Button onPress={handleSubmit(onSubmit)} disabled={!isDirty}>
-          Register
-        </Button>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-          }}
-        >
-          <Text
-            style={{
-              marginTop: 20,
-            }}
-          >
-            Already have an account?
-            <Text
-              onPress={() => navigation.navigate("Login")}
+            <Image
+              source={Logo}
               style={{
-                color: "blue",
-                textDecorationLine: "underline",
+                height: 100,
+                width: "100%",
+                resizeMode: "center",
+              }}
+            />
+            <Text
+              style={{
+                fontSize: 26,
+                fontWeight: "bold",
               }}
             >
-              {" "}
-              Sign In
+              Sign Up
             </Text>
-          </Text>
-        </View>
-      </ScrollView>
+            <Text>Fill your additional details</Text>
+          </View>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                label="First Name"
+                placeholder="Write your first name"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                errorMessage={errors.firstName && errors.firstName.message}
+              />
+            )}
+            name="firstName"
+          />
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                label="Last Name"
+                placeholder="Write your last name"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                errorMessage={errors.lastName && errors.lastName.message}
+              />
+            )}
+            name="lastName"
+          />
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                label="Phone Number"
+                placeholder="Write your phone number"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                errorMessage={errors.phoneNumber && errors.phoneNumber.message}
+              />
+            )}
+            name="phoneNumber"
+          />
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                label="Email"
+                placeholder="Write your email"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                errorMessage={errors.email && errors.email.message}
+              />
+            )}
+            name="email"
+          />
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                label="Password"
+                placeholder="Write your password"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                errorMessage={errors.password && errors.password.message}
+                secureTextEntry={showPassword ? false : true}
+                rightIcon={
+                  showPassword ? (
+                    <Ionicons
+                      name="eye-off"
+                      size={24}
+                      color="black"
+                      onPress={() => {
+                        handleShowPassword();
+                      }}
+                    />
+                  ) : (
+                    <Ionicons
+                      name="eye"
+                      size={24}
+                      color="black"
+                      onPress={() => {
+                        handleShowPassword();
+                      }}
+                    />
+                  )
+                }
+              />
+            )}
+            name="password"
+          />
+          <Button onPress={handleSubmit(onSubmit)} disabled={!isDirty}>
+            Register
+          </Button>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                marginTop: 20,
+              }}
+            >
+              Already have an account?
+              <Text
+                onPress={() => navigation.navigate("Login")}
+                style={{
+                  color: "blue",
+                  textDecorationLine: "underline",
+                }}
+              >
+                {" "}
+                Sign In
+              </Text>
+            </Text>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     </KeyboardAvoidingView>
   );
 };

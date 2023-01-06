@@ -1,6 +1,6 @@
 import { View, Alert, KeyboardAvoidingView, Platform } from "react-native";
 import Logo from "../../assets/mexl_cinema-1-edit-removebg.png";
-import { Input, Text, Button, Image } from "@rneui/base";
+import { Input, Text, Button, Image } from "@rneui/themed";
 import { useForm, Controller } from "react-hook-form";
 import { ScrollView } from "react-native-gesture-handler";
 import * as Yup from "yup";
@@ -36,7 +36,7 @@ const ResetPassword = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty, isValid, touchedFields },
+    formState: { errors, isDirty },
   } = useForm({
     resolver: yupResolver(ResetPasswordSchema),
     defaultValues: {
@@ -62,9 +62,10 @@ const ResetPassword = () => {
         >
           <Image
             source={Logo}
-            containerStyle={{
-              width: "100%",
+            style={{
               height: 100,
+              width: "100%",
+              resizeMode: "center",
             }}
           />
           <Text

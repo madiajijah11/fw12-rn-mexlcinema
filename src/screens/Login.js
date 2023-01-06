@@ -1,6 +1,6 @@
 import { View, Alert, KeyboardAvoidingView, Platform } from "react-native";
 import Logo from "../../assets/mexl_cinema-1-edit-removebg.png";
-import { Input, Text, Button, Image } from "@rneui/base";
+import { Input, Text, Button, Image } from "@rneui/themed";
 import { useForm, Controller } from "react-hook-form";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
@@ -61,9 +61,10 @@ const Login = () => {
         >
           <Image
             source={Logo}
-            containerStyle={{
-              width: "100%",
+            style={{
               height: 100,
+              width: "100%",
+              resizeMode: "center",
             }}
           />
           <Text
