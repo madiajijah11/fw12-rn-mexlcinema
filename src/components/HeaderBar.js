@@ -1,24 +1,27 @@
-import { Header, Text } from "@rneui/themed";
+import { Header } from "@rneui/themed";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { Button, Text } from "@ui-kitten/components";
 
 const HeaderBar = () => {
   return (
     <Header
       containerStyle={{
-        backgroundColor: "blue",
+        backgroundColor: "#3567ff",
       }}
       leftComponent={
         <Text
           style={{
-            color: "white",
-            fontSize: 18,
             fontWeight: "bold",
           }}
         >
           MexL Cinema
         </Text>
       }
-      rightComponent={<Ionicons name="menu" size={50} color="white" />}
+      rightComponent={
+        <Button size="large">
+          <Ionicons name="menu" size={50} color="white" />
+        </Button>
+      }
     />
   );
 };

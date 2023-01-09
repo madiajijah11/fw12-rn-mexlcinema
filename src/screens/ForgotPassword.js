@@ -19,6 +19,7 @@ const ForgotPassword = () => {
     handleSubmit,
     formState: { errors, isDirty },
   } = useForm({
+    mode: "all",
     resolver: yupResolver(ForgotPasswordSchema),
     defaultValues: {
       email: "",

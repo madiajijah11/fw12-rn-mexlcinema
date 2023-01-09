@@ -9,13 +9,15 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@expo/webpack-config": "^0.12.44",
+    "@eva-design/eva": "^2.1.1",
+    "@expo/webpack-config": "^0.17.2",
     "@hookform/resolvers": "^2.9.10",
     "@react-navigation/drawer": "^6.5.6",
     "@react-navigation/native": "^6.1.1",
     "@react-navigation/native-stack": "^6.9.7",
     "@rneui/base": "^4.0.0-rc.7",
     "@rneui/themed": "^4.0.0-rc.7",
+    "@ui-kitten/components": "^5.1.2",
     "expo": "^47.0.11",
     "expo-navigation-bar": "~2.0.1",
     "expo-status-bar": "~1.4.2",
@@ -27,6 +29,7 @@
     "react-native-reanimated": "~2.12.0",
     "react-native-safe-area-context": "4.4.1",
     "react-native-screens": "~3.18.0",
+    "react-native-svg": "^13.4.0",
     "react-native-web": "~0.18.9",
     "yup": "^0.32.11",
     "yup-password": "^0.2.2"

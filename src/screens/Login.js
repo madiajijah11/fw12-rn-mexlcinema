@@ -37,6 +37,7 @@ const Login = () => {
     handleSubmit,
     formState: { errors, isDirty },
   } = useForm({
+    mode: "all",
     resolver: yupResolver(LoginSchema),
     defaultValues: {
       email: "",
@@ -108,25 +109,14 @@ const Login = () => {
               errorMessage={errors.password && errors.password.message}
               secureTextEntry={showPassword ? false : true}
               rightIcon={
-                showPassword ? (
-                  <Ionicons
-                    name="eye-off"
-                    size={24}
-                    color="black"
-                    onPress={() => {
-                      handleShowPassword();
-                    }}
-                  />
-                ) : (
-                  <Ionicons
-                    name="eye"
-                    size={24}
-                    color="black"
-                    onPress={() => {
-                      handleShowPassword();
-                    }}
-                  />
-                )
+                <Ionicons
+                  name={showPassword ? "eye" : "eye-off"}
+                  size={24}
+                  color="black"
+                  onPress={() => {
+                    handleShowPassword(!showPassword);
+                  }}
+                />
               }
             />
           )}
@@ -150,7 +140,7 @@ const Login = () => {
             <Text
               onPress={() => navigation.navigate("ForgotPassword")}
               style={{
-                color: "blue",
+                color: "#3567ff",
                 textDecorationLine: "underline",
               }}
             >
@@ -174,7 +164,7 @@ const Login = () => {
             <Text
               onPress={() => navigation.navigate("Register")}
               style={{
-                color: "blue",
+                color: "#3567ff",
                 textDecorationLine: "underline",
               }}
             >

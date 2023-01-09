@@ -5,6 +5,8 @@ import Login from "../screens/Login";
 import ForgotPassword from "../screens/ForgotPassword";
 import ResetPassword from "../screens/ResetPassword";
 import Home from "../screens/Home";
+import ViewAll from "../screens/ViewAll";
+import MovieDetails from "../screens/MovieDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +45,20 @@ const Navigation = () => {
         <Stack.Screen
           name="Home"
           component={Home}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ViewAll"
+          component={ViewAll}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="MovieDetails"
+          component={MovieDetails}
           options={{
             headerShown: false,
           }}

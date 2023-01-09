@@ -38,6 +38,7 @@ const ResetPassword = () => {
     handleSubmit,
     formState: { errors, isDirty },
   } = useForm({
+    mode: "all",
     resolver: yupResolver(ResetPasswordSchema),
     defaultValues: {
       password: "",
@@ -90,25 +91,14 @@ const ResetPassword = () => {
               errorMessage={errors.password && errors.password.message}
               secureTextEntry={showPassword ? false : true}
               rightIcon={
-                showPassword ? (
-                  <Ionicons
-                    name="eye-off"
-                    size={24}
-                    color="black"
-                    onPress={() => {
-                      handleShowPassword();
-                    }}
-                  />
-                ) : (
-                  <Ionicons
-                    name="eye"
-                    size={24}
-                    color="black"
-                    onPress={() => {
-                      handleShowPassword();
-                    }}
-                  />
-                )
+                <Ionicons
+                  name={showPassword ? "eye" : "eye-off"}
+                  size={24}
+                  color="black"
+                  onPress={() => {
+                    handleShowPassword(!showPassword);
+                  }}
+                />
               }
             />
           )}
@@ -128,25 +118,14 @@ const ResetPassword = () => {
               }
               secureTextEntry={showPassword ? false : true}
               rightIcon={
-                showPassword ? (
-                  <Ionicons
-                    name="eye-off"
-                    size={24}
-                    color="black"
-                    onPress={() => {
-                      handleShowPassword();
-                    }}
-                  />
-                ) : (
-                  <Ionicons
-                    name="eye"
-                    size={24}
-                    color="black"
-                    onPress={() => {
-                      handleShowPassword();
-                    }}
-                  />
-                )
+                <Ionicons
+                  name={showPassword ? "eye" : "eye-off"}
+                  size={24}
+                  color="black"
+                  onPress={() => {
+                    handleShowPassword(!showPassword);
+                  }}
+                />
               }
             />
           )}

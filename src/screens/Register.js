@@ -46,6 +46,7 @@ const Register = () => {
     handleSubmit,
     formState: { errors, isDirty },
   } = useForm({
+    mode: "all",
     resolver: yupResolver(RegisterSchema),
     defaultValues: {
       firstName: "",
@@ -158,25 +159,14 @@ const Register = () => {
                 errorMessage={errors.password && errors.password.message}
                 secureTextEntry={showPassword ? false : true}
                 rightIcon={
-                  showPassword ? (
-                    <Ionicons
-                      name="eye-off"
-                      size={24}
-                      color="black"
-                      onPress={() => {
-                        handleShowPassword();
-                      }}
-                    />
-                  ) : (
-                    <Ionicons
-                      name="eye"
-                      size={24}
-                      color="black"
-                      onPress={() => {
-                        handleShowPassword();
-                      }}
-                    />
-                  )
+                  <Ionicons
+                    name={showPassword ? "eye" : "eye-off"}
+                    size={24}
+                    color="black"
+                    onPress={() => {
+                      handleShowPassword(!showPassword);
+                    }}
+                  />
                 }
               />
             )}
@@ -200,7 +190,7 @@ const Register = () => {
               <Text
                 onPress={() => navigation.navigate("Login")}
                 style={{
-                  color: "blue",
+                  color: "#3567ff",
                   textDecorationLine: "underline",
                 }}
               >
