@@ -234,7 +234,7 @@ const PersonalInfo = () => {
           onPress={() => handleSubmit(onSubmit)}
           disabled={!isDirty}
           style={{
-            marginTop: 10,
+            marginVertical: 10,
           }}
         >
           Pay your order

@@ -126,7 +126,11 @@ const Subscribe = () => {
   };
 
   return (
-    <Layout>
+    <Layout
+      style={{
+        marginBottom: 20,
+      }}
+    >
       <Card
         wrapperStyle={{
           paddingHorizontal: 10,
