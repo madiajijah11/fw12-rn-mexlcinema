@@ -7,13 +7,14 @@ import ResetPassword from "../screens/ResetPassword";
 import Home from "../screens/Home";
 import ViewAll from "../screens/ViewAll";
 import MovieDetails from "../screens/MovieDetails";
+import OrderPage from "../screens/OrderPage";
 
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="OrderPage">
         <Stack.Screen
           name="Register"
           component={Register}
@@ -59,6 +60,13 @@ const Navigation = () => {
         <Stack.Screen
           name="MovieDetails"
           component={MovieDetails}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="OrderPage"
+          component={OrderPage}
           options={{
             headerShown: false,
           }}

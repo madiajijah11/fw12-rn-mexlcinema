@@ -36,7 +36,7 @@ const MovieCard = ({ item }) => {
         </ListItem.Subtitle>
         <Button
           appearance="outline"
-          onPress={() => navigation.navigate("MovieDetails", { movie })}
+          onPress={() => navigation.navigate("MovieDetails", { item: item.id })}
         >
           Details
         </Button>
