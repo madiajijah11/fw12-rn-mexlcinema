@@ -7,6 +7,7 @@ import { useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Image } from "@rneui/themed";
 import ebvid from "../../assets/Vector.png";
+import { useNavigation } from "@react-navigation/native";
 
 const SelectSeats = () => {
   const [selectedSeat, setSelectedSeat] = useState([]);
@@ -46,7 +47,7 @@ const SelectSeats = () => {
             >
               {["A", "B", "C", "D", "E", "F", "G", " "].map((abc, index) => {
                 return (
-                  <Layout key={index + 1}>
+                  <Layout key={index}>
                     {["0", "1", "2", "3", "4", "5", "6", "7"].map(
                       (number, index) => {
                         if (number > 0) {
@@ -54,7 +55,7 @@ const SelectSeats = () => {
                             const seatNumber = `${abc}${number}`;
                             return (
                               <Pressable
-                                key={index + 1}
+                                key={index}
                                 onPress={() => selectSeat(seatNumber)}
                               >
                                 <Layout
@@ -97,7 +98,7 @@ const SelectSeats = () => {
                             const seatNumber = `${abc}${number}`;
                             return (
                               <Pressable
-                                key={index + 1}
+                                key={index}
                                 onPress={() => selectSeat(seatNumber)}
                               >
                                 <Layout
@@ -208,6 +209,7 @@ const SelectSeats = () => {
 };
 
 const OrderInfo = () => {
+  const navigation = useNavigation();
   return (
     <Layout>
       <Layout
@@ -280,7 +282,12 @@ const OrderInfo = () => {
             </Layout>
           </Layout>
         </Card>
-        <Button style={{ marginVertical: 10 }}>Checkout now</Button>
+        <Button
+          style={{ marginVertical: 10 }}
+          onPress={() => navigation.navigate("PaymentPage")}
+        >
+          Checkout now
+        </Button>
       </Layout>
     </Layout>
   );
