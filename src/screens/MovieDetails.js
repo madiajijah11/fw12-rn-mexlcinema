@@ -205,6 +205,7 @@ const SecondSection = () => {
           <SelectItem title="Oldest" />
         </Select>
         <Card
+          disabled
           style={{
             margin: 20,
           }}

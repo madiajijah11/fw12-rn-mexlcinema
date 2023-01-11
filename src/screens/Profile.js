@@ -50,7 +50,7 @@ const Info = () => {
           paddingVertical: 20,
         }}
       >
-        <Card>
+        <Card disabled>
           <Text>Info</Text>
           <Layout
             style={{
@@ -117,7 +117,7 @@ const AccountSettings = () => {
         }}
       >
         <Text>Personal Info</Text>
-        <Card>
+        <Card disabled>
           <Controller
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
@@ -222,7 +222,7 @@ const ChangePassword = () => {
           padding: 10,
         }}
       >
-        <Card>
+        <Card disabled>
           <Controller
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (

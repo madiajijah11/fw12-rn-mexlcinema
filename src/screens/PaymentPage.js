@@ -77,7 +77,7 @@ const PaymentMethods = () => {
         }}
       >
         <Text>Payment Method</Text>
-        <Card>
+        <Card disabled>
           <Layout
             style={{
               flexDirection: "row",
@@ -186,7 +186,7 @@ const PersonalInfo = () => {
         }}
       >
         <Text>Personal Info</Text>
-        <Card>
+        <Card disabled>
           <Controller
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (

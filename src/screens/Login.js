@@ -9,6 +9,9 @@ import YupPassword from "yup-password";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
+import { setToken } from "../redux/reducers/auth";
+import http from "../helpers/http";
+import { useDispatch } from "react-redux";
 
 YupPassword(Yup);
 
@@ -25,6 +28,7 @@ const LoginSchema = Yup.object().shape({
 });
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = () => {
@@ -35,7 +39,7 @@ const Login = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, isSubmitting },
   } = useForm({
     mode: "all",
     resolver: yupResolver(LoginSchema),
@@ -45,8 +49,18 @@ const Login = () => {
     },
   });
 
-  const onSubmit = (data) => {
-    Alert.alert("Form Data", JSON.stringify(data));
+  const onSubmit = async (values) => {
+    try {
+      const { email, password } = values;
+      const { data } = await http().post("/auth/login", {
+        email,
+        password,
+      });
+      dispatch(setToken(data.data.token));
+      navigation.navigate("Home");
+    } catch (error) {
+      Alert.alert("Error", error.response.data.message);
+    }
   };
 
   return (
@@ -122,7 +136,10 @@ const Login = () => {
           )}
           name="password"
         />
-        <Button onPress={handleSubmit(onSubmit)} disabled={!isDirty}>
+        <Button
+          onPress={handleSubmit(onSubmit)}
+          disabled={!isDirty || isSubmitting}
+        >
           Login
         </Button>
         <View

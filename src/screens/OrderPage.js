@@ -26,7 +26,7 @@ const SelectSeats = () => {
         }}
       >
         <Text>Choose Your Seat</Text>
-        <Card>
+        <Card disabled>
           <Divider
             style={{
               paddingVertical: 5,
@@ -218,7 +218,7 @@ const OrderInfo = () => {
         }}
       >
         <Text>Order Info</Text>
-        <Card>
+        <Card disabled>
           <Layout
             style={{
               justifyContent: "center",

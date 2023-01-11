@@ -44,7 +44,7 @@ const OrderHistory = () => {
           padding: 10,
         }}
       >
-        <Card>
+        <Card disabled>
           <Image
             source={ebvid}
             style={{

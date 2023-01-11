@@ -2,7 +2,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import authReducer from "./reducers/auth";
+import authReducer from "./auth";
 
 const persistConfig = {
   key: "auth",

@@ -17,35 +17,51 @@ import JohnWick from "../../assets/Rectangle-119-2.png";
 import BlackWidow from "../../assets/Rectangle-139.png";
 import Months from "../components/Months";
 import MovieCard from "../components/MovieCard";
+import { useEffect, useState } from "react";
+import http from "../helpers/http";
 
 const data = [
   {
     id: 1,
-    poster: SpiderMan,
+    picture: SpiderMan,
     title: "Spider-Man: Homecoming",
     genre: "Action, Adventure, Sci-Fi",
   },
   {
     id: 2,
-    poster: LionKing,
+    picture: LionKing,
     title: "The Lion King",
     genre: "Animation, Adventure, Drama",
   },
   {
     id: 3,
-    poster: JohnWick,
+    picture: JohnWick,
     title: "John Wick: Chapter 3 - Parabellum",
     genre: "Action, Crime, Thriller",
   },
   {
     id: 4,
-    poster: BlackWidow,
+    picture: BlackWidow,
     title: "Black Widow",
     genre: "Action, Adventure, Sci-Fi",
   },
 ];
 
 const NowShowing = ({ navigation }) => {
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const response = await http().get("/movies/nowshowing");
+        setMovies(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchMovies();
+  }, []);
+
   return (
     <Layout>
       <Layout style={{ marginVertical: 20, marginHorizontal: 10 }}>
@@ -65,7 +81,7 @@ const NowShowing = ({ navigation }) => {
           </Text>
         </Layout>
         <ScrollView horizontal>
-          {data.map((item) => (
+          {movies?.map((item) => (
             <MovieCard key={item.id} item={item} />
           ))}
         </ScrollView>
@@ -75,6 +91,20 @@ const NowShowing = ({ navigation }) => {
 };
 
 const UpComing = ({ navigation }) => {
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const response = await http().get("/movies/upcoming");
+        setMovies(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchMovies();
+  }, []);
+
   return (
     <Layout>
       <Layout style={{ marginVertical: 20, marginHorizontal: 10 }}>
@@ -95,7 +125,7 @@ const UpComing = ({ navigation }) => {
         </Layout>
         <Months />
         <ScrollView horizontal>
-          {data.map((item) => (
+          {movies?.map((item) => (
             <MovieCard key={item.id} item={item} />
           ))}
         </ScrollView>
@@ -128,10 +158,11 @@ const Subscribe = () => {
   return (
     <Layout
       style={{
-        marginBottom: 20,
+        paddingBottom: 20,
       }}
     >
       <Card
+        disabled
         wrapperStyle={{
           paddingHorizontal: 10,
         }}

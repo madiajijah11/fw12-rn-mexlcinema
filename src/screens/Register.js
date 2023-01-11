@@ -10,6 +10,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { setToken } from "../redux/reducers/auth";
+import http from "../helpers/http";
+import { useDispatch } from "react-redux";
 
 YupPassword(Yup);
 
@@ -33,6 +36,7 @@ const RegisterSchema = Yup.object().shape({
 });
 
 const Register = () => {
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = () => {
@@ -44,7 +48,7 @@ const Register = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, isSubmitting },
   } = useForm({
     mode: "all",
     resolver: yupResolver(RegisterSchema),
@@ -57,8 +61,21 @@ const Register = () => {
     },
   });
 
-  const onSubmit = (data) => {
-    Alert.alert("Form Data", JSON.stringify(data));
+  const onSubmit = async (values) => {
+    try {
+      const { firstName, lastName, phoneNumber, email, password } = values;
+      const { data } = await http().post("/auth/register", {
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        password,
+      });
+      dispatch(setToken(data.data.token));
+      navigation.navigate("Home");
+    } catch (error) {
+      Alert.alert("Error", error.response.data.message);
+    }
   };
 
   return (
@@ -172,7 +189,10 @@ const Register = () => {
             )}
             name="password"
           />
-          <Button onPress={handleSubmit(onSubmit)} disabled={!isDirty}>
+          <Button
+            onPress={handleSubmit(onSubmit)}
+            disabled={!isDirty || isSubmitting}
+          >
             Register
           </Button>
           <View

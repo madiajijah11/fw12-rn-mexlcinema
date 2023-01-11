@@ -2,6 +2,10 @@ import { Image, ListItem } from "@rneui/themed";
 import { Button } from "@ui-kitten/components";
 import { useNavigation } from "@react-navigation/native";
 
+const ImgURL = `https://adventurous-baseball-cap-newt.cyclic.app/assets/uploads/`;
+const source =
+  "https://image.api.playstation.com/vulcan/img/rnd/202011/0714/vuF88yWPSnDfmFJVTyNJpVwW.png";
+
 const MovieCard = ({ item }) => {
   const navigation = useNavigation();
   return (
@@ -20,14 +24,27 @@ const MovieCard = ({ item }) => {
           alignItems: "center",
         }}
       >
-        <Image
-          source={item.poster}
-          style={{
-            width: 120,
-            height: 170,
-            borderRadius: 5,
-          }}
-        />
+        {item.picture ? (
+          <Image
+            source={{ uri: ImgURL + item.picture }}
+            style={{
+              width: 120,
+              height: 170,
+              borderRadius: 5,
+              resizeMode: "contain",
+            }}
+          />
+        ) : (
+          <Image
+            source={item.picture}
+            style={{
+              width: 120,
+              height: 170,
+              borderRadius: 5,
+              resizeMode: "contain",
+            }}
+          />
+        )}
         <ListItem.Title style={{ fontWeight: "bold", marginTop: 5 }}>
           {item.title}
         </ListItem.Title>

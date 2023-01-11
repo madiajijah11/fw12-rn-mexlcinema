@@ -1,28 +1,76 @@
-import { Header } from "@rneui/themed";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Button, Text } from "@ui-kitten/components";
+import { useNavigation } from "@react-navigation/native";
+import {
+  Layout,
+  MenuItem,
+  Text,
+  TopNavigation,
+  TopNavigationAction,
+  OverflowMenu,
+} from "@ui-kitten/components";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../redux/reducers/auth";
+
+const MenuIcon = () => <Ionicons name="menu" size={50} />;
 
 const HeaderBar = () => {
+  const token = useSelector((state) => state.auth.token);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
+  };
+
+  const renderMenuAction = () => (
+    <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />
+  );
+
+  const renderLeftActions = () => <Text>MexL Cinema</Text>;
+
+  const renderRightActions = () => {
+    return (
+      <OverflowMenu
+        anchor={renderMenuAction}
+        visible={menuVisible}
+        onBackdropPress={toggleMenu}
+      >
+        <MenuItem title="Home" onPress={() => navigation.navigate("Home")} />
+        <MenuItem
+          title="List Movie"
+          onPress={() => navigation.navigate("ViewAll")}
+        />
+        {token ? (
+          <>
+            <MenuItem
+              title="Profile"
+              onPress={() => navigation.navigate("Profile")}
+            />
+            <MenuItem title="Logout" onPress={() => dispatch(logout())} />
+          </>
+        ) : (
+          <MenuItem
+            title="Sign In"
+            onPress={() => navigation.navigate("Login")}
+          />
+        )}
+      </OverflowMenu>
+    );
+  };
+
   return (
-    <Header
-      containerStyle={{
-        backgroundColor: "#3567ff",
+    <Layout
+      style={{
+        paddingTop: 40,
       }}
-      leftComponent={
-        <Text
-          style={{
-            fontWeight: "bold",
-          }}
-        >
-          MexL Cinema
-        </Text>
-      }
-      rightComponent={
-        <Button size="large">
-          <Ionicons name="menu" size={50} color="white" />
-        </Button>
-      }
-    />
+    >
+      <TopNavigation
+        accessoryLeft={renderLeftActions}
+        accessoryRight={renderRightActions}
+      />
+    </Layout>
   );
 };
 
