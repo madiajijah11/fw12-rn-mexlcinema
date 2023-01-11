@@ -6,6 +6,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useNavigation } from "@react-navigation/native";
 
 YupPassword(Yup);
 
@@ -14,6 +15,7 @@ const ForgotPasswordSchema = Yup.object().shape({
 });
 
 const ForgotPassword = () => {
+  const navigation = useNavigation();
   const {
     control,
     handleSubmit,
@@ -28,6 +30,7 @@ const ForgotPassword = () => {
 
   const onSubmit = (data) => {
     Alert.alert("Form Data", JSON.stringify(data));
+    navigation.navigate("ResetPassword");
   };
 
   return (
