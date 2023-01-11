@@ -7,7 +7,7 @@ import {
   TabBar,
   Text,
 } from "@ui-kitten/components";
-import { KeyboardAvoidingView, Platform } from "react-native";
+import { KeyboardAvoidingView, Platform, Pressable } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import HeaderBar from "../components/HeaderBar";
 import Footer from "../components/Footer";
@@ -19,12 +19,24 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
 import { useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
 
 const TopTabBar = () => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const navigation = useNavigation();
   return (
-    <TabBar>
-      <Tab title="Details Account" />
-      <Tab title="Order History" />
+    <TabBar
+      selectedIndex={selectedIndex}
+      onSelect={(index) => setSelectedIndex(index)}
+    >
+      <Tab
+        title="Details Account"
+        onPress={() => navigation.navigate("Profile")}
+      />
+      <Tab
+        title="Order History"
+        onPress={() => navigation.navigate("History")}
+      />
     </TabBar>
   );
 };
