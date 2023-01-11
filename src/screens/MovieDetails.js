@@ -341,7 +341,6 @@ const SecondSection = ({ id }) => {
                   }}
                 />
               )}
-
               <Text category="s2">
                 {cinema.address}, {cinema.city}
               </Text>
@@ -357,7 +356,7 @@ const SecondSection = ({ id }) => {
                 flexWrap: "wrap",
               }}
             >
-              {cinema?.times.map((time, index) => (
+              {cinema?.time?.map((time, index) => (
                 <Text
                   key={index + 1}
                   style={{

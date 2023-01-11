@@ -37,6 +37,7 @@ const TopTabBar = () => {
 };
 
 const OrderHistory = () => {
+  const navigation = useNavigation();
   return (
     <Layout>
       <Layout
@@ -60,7 +61,12 @@ const OrderHistory = () => {
               marginVertical: 10,
             }}
           />
-          <Button status="success">Ticket in active</Button>
+          <Button
+            status="success"
+            onPress={() => navigation.navigate("Ticket")}
+          >
+            Ticket in active
+          </Button>
         </Card>
       </Layout>
     </Layout>

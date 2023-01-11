@@ -187,7 +187,7 @@ const ChangePasswordSchema = Yup.object().shape({
     .minSymbols(1, "Password must have at least one symbol")
     .required("Password is required"),
   confirmNewPassword: Yup.string().oneOf(
-    [Yup.ref("password"), null],
+    [Yup.ref("newPassword"), null],
     "Passwords must match"
   ),
 });
@@ -215,6 +215,7 @@ const ChangePassword = () => {
   const onSubmit = (data) => {
     Alert.alert("Form Data", JSON.stringify(data));
   };
+
   return (
     <Layout>
       <Layout

@@ -34,7 +34,7 @@ const MovieCard = ({ item }) => {
           />
         ) : (
           <Image
-            source={item.picture}
+            source={item.poster}
             style={{
               width: 120,
               height: 170,

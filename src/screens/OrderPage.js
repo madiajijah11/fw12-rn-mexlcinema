@@ -67,7 +67,7 @@ const SelectSeats = () => {
                                     backgroundColor:
                                       (selectedSeat.includes(seatNumber) &&
                                         "#3567ff") ||
-                                      "white",
+                                      "brown",
                                   }}
                                 >
                                   <Text> </Text>
@@ -110,7 +110,7 @@ const SelectSeats = () => {
                                     backgroundColor:
                                       (selectedSeat.includes(seatNumber) &&
                                         "#3567ff") ||
-                                      "white",
+                                      "brown",
                                   }}
                                 >
                                   <Text> </Text>
@@ -153,7 +153,7 @@ const SelectSeats = () => {
                       margin: 2,
                       borderRadius: 5,
                       width: 23,
-                      backgroundColor: "white",
+                      backgroundColor: "brown",
                     }}
                   >
                     <Text> </Text>

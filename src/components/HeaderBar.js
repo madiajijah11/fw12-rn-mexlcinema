@@ -48,13 +48,19 @@ const HeaderBar = () => {
               title="Profile"
               onPress={() => navigation.navigate("Profile")}
             />
+            <MenuItem
+              title="History"
+              onPress={() => navigation.navigate("History")}
+            />
             <MenuItem title="Logout" onPress={() => dispatch(logout())} />
           </>
         ) : (
-          <MenuItem
-            title="Sign In"
-            onPress={() => navigation.navigate("Login")}
-          />
+          <>
+            <MenuItem
+              title="Sign In"
+              onPress={() => navigation.navigate("Login")}
+            />
+          </>
         )}
       </OverflowMenu>
     );
