@@ -1,4 +1,4 @@
-import { Image, ListItem, Card, Input } from "@rneui/themed";
+import { Image, Card, Input } from "@rneui/themed";
 import { ScrollView } from "react-native-gesture-handler";
 import { Alert, KeyboardAvoidingView } from "react-native";
 import { useForm, Controller } from "react-hook-form";
@@ -167,9 +167,8 @@ const Subscribe = () => {
           name="email"
         />
         <Button
-          buttonStyle={{
-            width: "100%",
-            marginBottom: 20,
+          style={{
+            marginBottom: 10,
           }}
           onPress={handleSubmit(onSubmit)}
           disabled={!isDirty}
@@ -182,7 +181,7 @@ const Subscribe = () => {
           }}
         >
           By joining you as a MexL Cinema member, we will always send you the
-          latest updates via email .
+          latest updates via email.
         </Text>
       </Card>
     </Layout>

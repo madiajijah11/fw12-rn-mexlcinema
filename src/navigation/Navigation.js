@@ -11,13 +11,14 @@ import OrderPage from "../screens/OrderPage";
 import PaymentPage from "../screens/PaymentPage";
 import Profile from "../screens/Profile";
 import History from "../screens/History";
+import Ticket from "../screens/Ticket";
 
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="History">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
           name="Register"
           component={Register}
@@ -91,6 +92,13 @@ const Navigation = () => {
         <Stack.Screen
           name="History"
           component={History}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Ticket"
+          component={Ticket}
           options={{
             headerShown: false,
           }}
