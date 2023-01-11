@@ -3,8 +3,6 @@ import { Button } from "@ui-kitten/components";
 import { useNavigation } from "@react-navigation/native";
 
 const ImgURL = `https://adventurous-baseball-cap-newt.cyclic.app/assets/uploads/`;
-const source =
-  "https://image.api.playstation.com/vulcan/img/rnd/202011/0714/vuF88yWPSnDfmFJVTyNJpVwW.png";
 
 const MovieCard = ({ item }) => {
   const navigation = useNavigation();
