@@ -8,6 +8,8 @@ import YupPassword from "yup-password";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
+import http from "../helpers/http";
+import { useNavigation } from "@react-navigation/native";
 
 YupPassword(Yup);
 
@@ -26,7 +28,8 @@ const ResetPasswordSchema = Yup.object().shape({
   ),
 });
 
-const ResetPassword = () => {
+const ResetPassword = ({ route }) => {
+  const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = () => {
@@ -36,18 +39,34 @@ const ResetPassword = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, isSubmitting },
   } = useForm({
     mode: "all",
     resolver: yupResolver(ResetPasswordSchema),
     defaultValues: {
+      code: "",
       password: "",
       confirmPassword: "",
     },
   });
 
-  const onSubmit = (data) => {
-    Alert.alert("Form Data", JSON.stringify(data));
+  const onSubmit = async (values) => {
+    // Alert.alert("Form Data", JSON.stringify(values));
+    try {
+      const { code, password, confirmPassword } = values;
+      const { data } = await http().post("/auth/resetpassword", {
+        email: route.params.email,
+        code,
+        password,
+        confirmPassword,
+      });
+      if (data.success === true) {
+        Alert.alert("Success", data.message);
+        navigation.navigate("Login");
+      }
+    } catch (error) {
+      Alert.alert("Error", error.response.data.message);
+    }
   };
 
   return (
@@ -79,6 +98,20 @@ const ResetPassword = () => {
           </Text>
           <Text>set your new password</Text>
         </View>
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              label="Code"
+              placeholder="Write your code"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              errorMessage={errors.code && errors.code.message}
+            />
+          )}
+          name="code"
+        />
         <Controller
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
@@ -131,7 +164,10 @@ const ResetPassword = () => {
           )}
           name="confirmPassword"
         />
-        <Button onPress={handleSubmit(onSubmit)} disabled={!isDirty}>
+        <Button
+          onPress={handleSubmit(onSubmit)}
+          disabled={!isDirty || isSubmitting}
+        >
           Submit
         </Button>
       </ScrollView>

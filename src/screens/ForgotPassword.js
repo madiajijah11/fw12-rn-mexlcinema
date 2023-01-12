@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import YupPassword from "yup-password";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigation } from "@react-navigation/native";
+import http from "../helpers/http";
 
 YupPassword(Yup);
 
@@ -19,7 +20,7 @@ const ForgotPassword = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, isSubmitting },
   } = useForm({
     mode: "all",
     resolver: yupResolver(ForgotPasswordSchema),
@@ -28,9 +29,20 @@ const ForgotPassword = () => {
     },
   });
 
-  const onSubmit = (data) => {
-    Alert.alert("Form Data", JSON.stringify(data));
-    navigation.navigate("ResetPassword");
+  const onSubmit = async (values) => {
+    try {
+      const { data } = await http().post("/auth/forgotpassword", {
+        email: values.email,
+      });
+      if (data.success === true) {
+        Alert.alert("Success", data.message);
+        navigation.navigate("ResetPassword", {
+          email: values.email,
+        });
+      }
+    } catch (error) {
+      Alert.alert("Error", error.response.data.message);
+    }
   };
 
   return (
@@ -76,7 +88,10 @@ const ForgotPassword = () => {
           )}
           name="email"
         />
-        <Button onPress={handleSubmit(onSubmit)} disabled={!isDirty}>
+        <Button
+          onPress={handleSubmit(onSubmit)}
+          disabled={!isDirty || isSubmitting}
+        >
           Send
         </Button>
       </ScrollView>
