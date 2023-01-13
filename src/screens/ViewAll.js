@@ -65,7 +65,6 @@ const FirstSection = () => {
           selectedIndex={selectedIndex}
           onSelect={(index) => setSelectedIndex(index)}
         >
-          <SelectItem title="Sort" />
           <SelectItem title="Latest" />
           <SelectItem title="Oldest" />
         </Select>

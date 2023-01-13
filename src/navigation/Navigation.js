@@ -12,10 +12,12 @@ import PaymentPage from "../screens/PaymentPage";
 import Profile from "../screens/Profile";
 import History from "../screens/History";
 import Ticket from "../screens/Ticket";
+import { useSelector } from "react-redux";
 
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
+  const token = useSelector((state) => state.auth.token);
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
@@ -40,41 +42,45 @@ const Navigation = () => {
             headerShown: false,
           }}
         />
-        <Stack.Screen
-          name="OrderPage"
-          component={OrderPage}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="PaymentPage"
-          component={PaymentPage}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="Profile"
-          component={Profile}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="History"
-          component={History}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="Ticket"
-          component={Ticket}
-          options={{
-            headerShown: false,
-          }}
-        />
+        {token && (
+          <>
+            <Stack.Screen
+              name="OrderPage"
+              component={OrderPage}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="PaymentPage"
+              component={PaymentPage}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="Profile"
+              component={Profile}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="History"
+              component={History}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="Ticket"
+              component={Ticket}
+              options={{
+                headerShown: false,
+              }}
+            />
+          </>
+        )}
         <Stack.Screen
           name="Login"
           component={Login}

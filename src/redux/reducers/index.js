@@ -3,6 +3,8 @@ import { persistReducer } from "redux-persist";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import authReducer from "./auth";
+import transactionReducer from "./transaction";
+import profileReducer from "./profile";
 
 const persistConfig = {
   key: "auth",
@@ -11,6 +13,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   auth: persistReducer(persistConfig, authReducer),
+  transaction: transactionReducer,
+  profile: profileReducer,
 });
 
 export default rootReducer;

@@ -14,7 +14,6 @@ const Footer = () => {
         <Image
           source={Logo}
           style={{
-            aspectRatio: 1,
             height: 100,
             width: 160,
             resizeMode: "contain",

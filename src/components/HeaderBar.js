@@ -8,9 +8,10 @@ import {
   TopNavigationAction,
   OverflowMenu,
 } from "@ui-kitten/components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/reducers/auth";
+import { getUserInfo } from "../redux/actions/profile";
 
 const MenuIcon = () => <Ionicons name="menu" size={50} />;
 
@@ -19,6 +20,12 @@ const HeaderBar = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [menuVisible, setMenuVisible] = useState(false);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(getUserInfo(token));
+    }
+  }, [token]);
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);

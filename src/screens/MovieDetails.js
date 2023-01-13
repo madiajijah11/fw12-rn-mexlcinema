@@ -11,7 +11,7 @@ import {
 import { Image } from "@rneui/themed";
 import HeaderBar from "../components/HeaderBar";
 import Footer from "../components/Footer";
-import { KeyboardAvoidingView, Platform } from "react-native";
+import { KeyboardAvoidingView, Platform, Pressable } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useState, useEffect } from "react";
 import SpiderMan from "../../assets/Rectangle-119.png";
@@ -19,6 +19,8 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import ebvid from "../../assets/Vector.png";
 import { useNavigation } from "@react-navigation/native";
 import http from "../helpers/http";
+import { useDispatch } from "react-redux";
+import { chooseMovie } from "../redux/reducers/transaction";
 
 const data = {
   id: 1,
@@ -99,14 +101,14 @@ const FirstSection = ({ id }) => {
           />
         )}
       </Layout>
-      <Text category="h5">{movie?.title}</Text>
+      <Text category="h5">{movie?.title ? movie?.title : "N/A"}</Text>
       <Text
         category="s1"
         style={{
           marginVertical: 10,
         }}
       >
-        {movie?.genre}
+        {movie?.genre ? movie?.genre : "N/A"}
       </Text>
       <Layout
         style={{
@@ -125,7 +127,7 @@ const FirstSection = ({ id }) => {
               fontSize: 18,
             }}
           >
-            {convertDate(movie?.releaseDate)}
+            {movie?.releaseDate ? convertDate(movie?.releaseDate) : "N/A"}
           </Text>
         </Layout>
         <Layout
@@ -139,7 +141,7 @@ const FirstSection = ({ id }) => {
               fontSize: 18,
             }}
           >
-            {movie?.director}
+            {movie?.director ? movie?.director : "N/A"}
           </Text>
         </Layout>
       </Layout>
@@ -160,7 +162,7 @@ const FirstSection = ({ id }) => {
               fontSize: 18,
             }}
           >
-            {movie?.duration}
+            {movie?.duration ? convertTime(movie?.duration) : "N/A"}
           </Text>
         </Layout>
         <Layout
@@ -174,16 +176,18 @@ const FirstSection = ({ id }) => {
               fontSize: 18,
             }}
           >
-            {castArray3?.map((cast, index) => {
-              return index === castArray3.length - 1 ? (
-                <Text key={index}>
-                  {cast}
-                  <Text className="text-gray-400">...</Text>
-                </Text>
-              ) : (
-                <Text key={index}>{cast},</Text>
-              );
-            })}
+            {movie.cast
+              ? castArray3?.map((cast, index) => {
+                  return index === castArray3.length - 1 ? (
+                    <Text key={index}>
+                      {cast}
+                      <Text className="text-gray-400">...</Text>
+                    </Text>
+                  ) : (
+                    <Text key={index}>{cast},</Text>
+                  );
+                })
+              : "N/A"}
           </Text>
         </Layout>
       </Layout>
@@ -204,7 +208,7 @@ const FirstSection = ({ id }) => {
             textAlign: "justify",
           }}
         >
-          {movie?.synopsis}
+          {movie?.synopsis ? movie?.synopsis : "N/A"}
         </Text>
       </Layout>
     </Layout>
@@ -232,8 +236,8 @@ const schedules = [
 
 const SecondSection = ({ id }) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [date, setDate] = useState(new Date());
-  const [selectedIndex, setSelectedIndex] = useState();
   const [location, setLocation] = useState([]);
   const [city, setCity] = useState("");
   const [schedule, setSchedule] = useState([]);
@@ -272,17 +276,17 @@ const SecondSection = ({ id }) => {
     setSelectedCinema(cinema);
   };
 
-  // const book = () => {
-  //   dispatch(
-  //     chooseMovie({
-  //       movieId: id,
-  //       cinemaId: selectedCinema,
-  //       bookingDate: date,
-  //       bookingTime: selectedTime,
-  //     })
-  //   );
-  //   navigate("/order-page");
-  // };
+  const book = () => {
+    dispatch(
+      chooseMovie({
+        movieId: id,
+        cinemaId: selectedCinema,
+        bookingDate: date,
+        bookingTime: selectedTime,
+      })
+    );
+    navigation.navigate("OrderPage");
+  };
 
   return (
     <Layout>
@@ -300,13 +304,12 @@ const SecondSection = ({ id }) => {
             marginVertical: 10,
           }}
         />
-        <Select
-          selectedIndex={selectedIndex}
-          onSelect={(index) => setSelectedIndex(index)}
-        >
-          <SelectItem title="Sort" />
-          <SelectItem title="Latest" />
-          <SelectItem title="Oldest" />
+        <Select onSelect={(index) => setCity(location[index.row].name)}>
+          {location?.map((city) => (
+            <Pressable key={city?.name}>
+              <SelectItem title={city?.name} />
+            </Pressable>
+          ))}
         </Select>
         {schedule?.map((cinema) => (
           <Card
@@ -362,7 +365,17 @@ const SecondSection = ({ id }) => {
                   style={{
                     width: "25%",
                     textAlign: "center",
+                    backgroundColor:
+                      cinema.id === selectedCinema && time === selectedTime
+                        ? "#3567ff"
+                        : "transparent",
+                    borderRadius: 5,
+                    color:
+                      cinema.id === selectedCinema && time === selectedTime
+                        ? "white"
+                        : "black",
                   }}
+                  onPress={() => selectTime(time, cinema.id)}
                 >
                   {time}
                 </Text>
@@ -372,6 +385,7 @@ const SecondSection = ({ id }) => {
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
+                marginVertical: 10,
               }}
             >
               <Text>Price</Text>
@@ -386,7 +400,13 @@ const SecondSection = ({ id }) => {
                 })}
               </Text>
             </Layout>
-            <Button onPress={() => navigation.navigate("OrderPage")}>
+            <Button
+              style={{
+                opacity: selectedCinema !== cinema.id ? 0.5 : 1,
+              }}
+              disabled={selectedCinema !== cinema.id}
+              onPress={book}
+            >
               Book Now
             </Button>
           </Card>

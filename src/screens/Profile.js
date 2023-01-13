@@ -20,6 +20,8 @@ import { useForm, Controller } from "react-hook-form";
 import { useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../redux/reducers/auth";
 
 const TopTabBar = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -41,7 +43,9 @@ const TopTabBar = () => {
   );
 };
 
-const Info = () => {
+const Info = ({ user }) => {
+  const dispatch = useDispatch();
+  const ImgURL = `https://adventurous-baseball-cap-newt.cyclic.app/assets/uploads/`;
   return (
     <Layout>
       <Layout
@@ -58,15 +62,32 @@ const Info = () => {
               alignItems: "center",
             }}
           >
-            <Image
-              source={Picture}
-              style={{
-                width: 100,
-                height: 100,
-                resizeMode: "cover",
-              }}
-            />
-            <Text>Jonas El Rodriguez</Text>
+            {user?.picture ? (
+              <Image
+                source={{ uri: ImgURL + user.picture }}
+                style={{
+                  width: 100,
+                  height: 100,
+                  resizeMode: "cover",
+                  borderRadius: 100,
+                }}
+              />
+            ) : (
+              <Image
+                source={Picture}
+                style={{
+                  width: 100,
+                  height: 100,
+                  resizeMode: "cover",
+                  borderRadius: 100,
+                }}
+              />
+            )}
+            <Text>
+              {user?.firstName || user?.lastName
+                ? `${user?.firstName} ${user?.lastName}`
+                : "N/A"}
+            </Text>
             <Text>Moviegoers</Text>
           </Layout>
           <Divider
@@ -74,7 +95,7 @@ const Info = () => {
               marginVertical: 10,
             }}
           />
-          <Button>Logout</Button>
+          <Button onPress={() => dispatch(logout())}>Logout</Button>
         </Card>
       </Layout>
     </Layout>
@@ -82,7 +103,8 @@ const Info = () => {
 };
 
 const UpdateProfileSchema = Yup.object().shape({
-  fullName: Yup.string().required("Last name is required"),
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("Last name is required"),
   phoneNumber: Yup.string()
     .min(10, "Phone number must be at least 10 characters")
     .max(13, "Phone number must be at most 13 characters")
@@ -91,18 +113,19 @@ const UpdateProfileSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
 });
 
-const AccountSettings = () => {
+const AccountSettings = ({ user }) => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, isSubmitting },
   } = useForm({
     mode: "all",
     resolver: yupResolver(UpdateProfileSchema),
     defaultValues: {
-      fullName: "",
-      email: "",
-      phoneNumber: "",
+      firstName: user?.firstName || "",
+      lastName: user?.lastName || "",
+      email: user?.email || "",
+      phoneNumber: user?.phoneNumber || "",
     },
   });
 
@@ -122,15 +145,29 @@ const AccountSettings = () => {
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
               <Input
-                label="Full Name"
-                placeholder="Write your full name"
+                label="First Name"
+                placeholder="Write your first name"
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
-                errorMessage={errors.fullName && errors.fullName.message}
+                errorMessage={errors.firstName && errors.firstName.message}
               />
             )}
-            name="fullName"
+            name="firstName"
+          />
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                label="Last Name"
+                placeholder="Write your last name"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                errorMessage={errors.lastName && errors.lastName.message}
+              />
+            )}
+            name="lastName"
           />
           <Controller
             control={control}
@@ -163,7 +200,7 @@ const AccountSettings = () => {
         </Card>
         <Button
           onPress={() => handleSubmit(onSubmit)}
-          disabled={!isDirty}
+          disabled={!isDirty || isSubmitting}
           style={{
             marginVertical: 10,
           }}
@@ -202,7 +239,7 @@ const ChangePassword = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, isSubmitting },
   } = useForm({
     mode: "all",
     resolver: yupResolver(ChangePasswordSchema),
@@ -279,7 +316,7 @@ const ChangePassword = () => {
         </Card>
         <Button
           onPress={handleSubmit(onSubmit)}
-          disabled={!isDirty}
+          disabled={!isDirty || isSubmitting}
           style={{
             marginVertical: 10,
           }}
@@ -292,6 +329,7 @@ const ChangePassword = () => {
 };
 
 const Profile = () => {
+  const { userInfo } = useSelector((state) => state.profile);
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -299,8 +337,8 @@ const Profile = () => {
       <ScrollView>
         <HeaderBar />
         <TopTabBar />
-        <Info />
-        <AccountSettings />
+        <Info user={userInfo} />
+        <AccountSettings user={userInfo} />
         <ChangePassword />
         <Footer />
       </ScrollView>

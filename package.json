@@ -44,7 +44,8 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.2",
     "yup": "^0.32.11",
-    "yup-password": "^0.2.2"
+    "yup-password": "^0.2.2",
+    "expo-image-picker": "~14.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

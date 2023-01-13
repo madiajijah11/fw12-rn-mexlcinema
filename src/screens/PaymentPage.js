@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, Platform, Pressable } from "react-native";
+import { Alert, KeyboardAvoidingView, Platform, Pressable } from "react-native";
 import HeaderBar from "../components/HeaderBar";
 import Footer from "../components/Footer";
 import { ScrollView } from "react-native-gesture-handler";
@@ -10,11 +10,13 @@ import Paypal from "../../assets/payment/logos_paypal.png";
 import OVO from "../../assets/payment/logos_ovo.png";
 import DANA from "../../assets/payment/logos_dana.png";
 import { Image, Input } from "@rneui/themed";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
-import YupPassword from "yup-password";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
+import { useSelector } from "react-redux";
+import http from "../helpers/http";
+import { useNavigation } from "@react-navigation/native";
 
 const data = [
   {
@@ -56,9 +58,9 @@ const TotalPayment = () => {
         flexDirection: "row",
         justifyContent: "space-between",
         padding: 10,
-        backgroundColor: "#3567ff",
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
+        borderWidth: 1,
       }}
     >
       <Text>Total</Text>
@@ -67,90 +69,8 @@ const TotalPayment = () => {
   );
 };
 
-const PaymentMethods = () => {
-  const [selectedPayment, setSelectedPayment] = useState(null);
-  return (
-    <Layout>
-      <Layout
-        style={{
-          padding: 10,
-        }}
-      >
-        <Text>Payment Method</Text>
-        <Card disabled>
-          <Layout
-            style={{
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            {data.map((item) => {
-              return (
-                <Layout
-                  key={item.id}
-                  style={{
-                    borderRadius: 10,
-                    backgroundColor:
-                      selectedPayment === item.id ? "#3567ff" : "white",
-                    borderWidth: 1,
-                    padding: 5,
-                    margin: 5,
-                  }}
-                >
-                  <Pressable onPress={() => setSelectedPayment(item.id)}>
-                    <Image
-                      source={item.paymentPicture}
-                      style={{
-                        height: 75,
-                        width: 95,
-                        resizeMode: "contain",
-                      }}
-                    />
-                  </Pressable>
-                </Layout>
-              );
-            })}
-            <Layout
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Divider style={{ flex: 1 }} />
-              <Text
-                style={{
-                  marginHorizontal: 10,
-                }}
-              >
-                or
-              </Text>
-              <Divider style={{ flex: 1 }} />
-            </Layout>
-          </Layout>
-          <Text
-            style={{
-              textAlign: "center",
-            }}
-          >
-            Pay via cash.{" "}
-            <Text
-              style={{
-                color: "#3567ff",
-              }}
-            >
-              See how it work
-            </Text>
-          </Text>
-        </Card>
-      </Layout>
-    </Layout>
-  );
-};
-
 const PayOrderSchema = Yup.object().shape({
-  fullName: Yup.string().required("Last name is required"),
+  fullName: Yup.string().required("Full name is required"),
   phoneNumber: Yup.string()
     .min(10, "Phone number must be at least 10 characters")
     .max(13, "Phone number must be at most 13 characters")
@@ -159,11 +79,29 @@ const PayOrderSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
 });
 
-const PersonalInfo = () => {
+const PaymentMethods = () => {
+  const navigation = useNavigation();
+  const [paymentList, setPaymentList] = useState([]);
+  const [selectedPayment, setSelectedPayment] = useState(null);
+  const dataTransaction = useSelector((state) => state.transaction);
+  const userId = useSelector((state) => state.profile.userInfo.id);
+  const token = useSelector((state) => state.auth.token);
+
+  const ImgURL = `https://adventurous-baseball-cap-newt.cyclic.app/assets/uploads/`;
+
+  useEffect(() => {
+    getPaymentList();
+  }, []);
+
+  const getPaymentList = async () => {
+    const { data } = await http(token).get("/paymentmethods");
+    setPaymentList(data.data);
+  };
+
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, isSubmitting },
   } = useForm({
     mode: "all",
     resolver: yupResolver(PayOrderSchema),
@@ -174,73 +112,179 @@ const PersonalInfo = () => {
     },
   });
 
-  const onSubmit = (data) => {
-    Alert.alert("Form Data", JSON.stringify(data));
+  const onSubmit = async (values) => {
+    try {
+      const { data } = await http(token).post("/transactions/checkout", {
+        userId,
+        ...dataTransaction,
+        paymentMethodId: selectedPayment,
+        ...values,
+      });
+      // console.log(data);
+      if (data.data.status === "success") {
+        Alert.alert("Success", data.message);
+        navigation.navigate("Home");
+      } else {
+        Alert.alert("Error", data.data.message);
+      }
+    } catch (error) {
+      Alert.alert("Error", "Something went wrong");
+    }
   };
-
   return (
-    <Layout>
-      <Layout
-        style={{
-          padding: 10,
-        }}
-      >
-        <Text>Personal Info</Text>
-        <Card disabled>
-          <Controller
-            control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                label="Full Name"
-                placeholder="Write your full name"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                errorMessage={errors.fullName && errors.fullName.message}
-              />
-            )}
-            name="fullName"
-          />
-          <Controller
-            control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                label="Email"
-                placeholder="Write your email"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                errorMessage={errors.email && errors.email.message}
-              />
-            )}
-            name="email"
-          />
-          <Controller
-            control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                label="Phone Number"
-                placeholder="Write your phone number"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                errorMessage={errors.phoneNumber && errors.phoneNumber.message}
-              />
-            )}
-            name="phoneNumber"
-          />
-        </Card>
-        <Button
-          onPress={() => handleSubmit(onSubmit)}
-          disabled={!isDirty}
+    <>
+      <Layout>
+        <Layout
           style={{
-            marginVertical: 10,
+            padding: 10,
           }}
         >
-          Pay your order
-        </Button>
+          <Text>Payment Method</Text>
+          <Card disabled>
+            <Layout
+              style={{
+                flexDirection: "row",
+                flexWrap: "wrap",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {paymentList?.map((item) => {
+                return (
+                  <Layout
+                    key={item.id}
+                    style={{
+                      borderRadius: 10,
+                      backgroundColor:
+                        selectedPayment === item.id ? "#3567ff" : "white",
+                      borderWidth: 1,
+                      padding: 5,
+                      margin: 5,
+                    }}
+                  >
+                    <Pressable onPress={() => setSelectedPayment(item.id)}>
+                      {item.picture ? (
+                        <Image
+                          source={{ uri: ImgURL + item.picture }}
+                          style={{
+                            height: 75,
+                            width: 95,
+                            resizeMode: "contain",
+                          }}
+                        />
+                      ) : (
+                        <Image
+                          source={data[0].paymentPicture}
+                          style={{
+                            height: 75,
+                            width: 95,
+                            resizeMode: "contain",
+                          }}
+                        />
+                      )}
+                    </Pressable>
+                  </Layout>
+                );
+              })}
+              <Layout
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Divider style={{ flex: 1 }} />
+                <Text
+                  style={{
+                    marginHorizontal: 10,
+                  }}
+                >
+                  or
+                </Text>
+                <Divider style={{ flex: 1 }} />
+              </Layout>
+            </Layout>
+            <Text
+              style={{
+                textAlign: "center",
+              }}
+            >
+              Pay via cash.{" "}
+              <Text
+                style={{
+                  color: "#3567ff",
+                }}
+              >
+                See how it work
+              </Text>
+            </Text>
+          </Card>
+        </Layout>
       </Layout>
-    </Layout>
+      <Layout>
+        <Layout
+          style={{
+            padding: 10,
+          }}
+        >
+          <Text>Personal Info</Text>
+          <Card disabled>
+            <Controller
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  label="Full Name"
+                  placeholder="Write your full name"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  errorMessage={errors.fullName && errors.fullName.message}
+                />
+              )}
+              name="fullName"
+            />
+            <Controller
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  label="Email"
+                  placeholder="Write your email"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  errorMessage={errors.email && errors.email.message}
+                />
+              )}
+              name="email"
+            />
+            <Controller
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  label="Phone Number"
+                  placeholder="Write your phone number"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  errorMessage={
+                    errors.phoneNumber && errors.phoneNumber.message
+                  }
+                />
+              )}
+              name="phoneNumber"
+            />
+          </Card>
+          <Button
+            onPress={handleSubmit(onSubmit)}
+            disabled={!isDirty || isSubmitting}
+            style={{
+              marginVertical: 10,
+            }}
+          >
+            Pay your order
+          </Button>
+        </Layout>
+      </Layout>
+    </>
   );
 };
 
@@ -253,7 +297,6 @@ const PaymentPage = () => {
         <HeaderBar />
         <TotalPayment />
         <PaymentMethods />
-        <PersonalInfo />
         <Footer />
       </ScrollView>
     </KeyboardAvoidingView>
