@@ -19,7 +19,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import ebvid from "../../assets/Vector.png";
 import { useNavigation } from "@react-navigation/native";
 import http from "../helpers/http";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { chooseMovie } from "../redux/reducers/transaction";
 
 const data = {
@@ -243,6 +243,7 @@ const SecondSection = ({ id }) => {
   const [schedule, setSchedule] = useState([]);
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedCinema, setSelectedCinema] = useState("");
+  const token = useSelector((state) => state.auth.token);
 
   const ImgURL = `https://adventurous-baseball-cap-newt.cyclic.app/assets/uploads/`;
 
@@ -405,7 +406,7 @@ const SecondSection = ({ id }) => {
                 opacity: selectedCinema !== cinema.id ? 0.5 : 1,
               }}
               disabled={selectedCinema !== cinema.id}
-              onPress={book}
+              onPress={token ? book : () => navigation.navigate("Login")}
             >
               Book Now
             </Button>

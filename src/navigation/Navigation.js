@@ -42,45 +42,6 @@ const Navigation = () => {
             headerShown: false,
           }}
         />
-        {token && (
-          <>
-            <Stack.Screen
-              name="OrderPage"
-              component={OrderPage}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="PaymentPage"
-              component={PaymentPage}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="Profile"
-              component={Profile}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="History"
-              component={History}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="Ticket"
-              component={Ticket}
-              options={{
-                headerShown: false,
-              }}
-            />
-          </>
-        )}
         <Stack.Screen
           name="Login"
           component={Login}
@@ -105,6 +66,41 @@ const Navigation = () => {
         <Stack.Screen
           name="ResetPassword"
           component={ResetPassword}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="OrderPage"
+          component={OrderPage}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="PaymentPage"
+          component={PaymentPage}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="History"
+          component={History}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Ticket"
+          component={Ticket}
           options={{
             headerShown: false,
           }}

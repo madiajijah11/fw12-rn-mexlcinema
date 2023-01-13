@@ -59,7 +59,13 @@ const HeaderBar = () => {
               title="History"
               onPress={() => navigation.navigate("History")}
             />
-            <MenuItem title="Logout" onPress={() => dispatch(logout())} />
+            <MenuItem
+              title="Logout"
+              onPress={() => {
+                dispatch(logout());
+                navigation.navigate("Home");
+              }}
+            />
           </>
         ) : (
           <>

@@ -45,6 +45,7 @@ const TopTabBar = () => {
 
 const Info = ({ user }) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const ImgURL = `https://adventurous-baseball-cap-newt.cyclic.app/assets/uploads/`;
   return (
     <Layout>
@@ -95,7 +96,14 @@ const Info = ({ user }) => {
               marginVertical: 10,
             }}
           />
-          <Button onPress={() => dispatch(logout())}>Logout</Button>
+          <Button
+            onPress={() => {
+              dispatch(logout());
+              navigation.navigate("Home");
+            }}
+          >
+            Logout
+          </Button>
         </Card>
       </Layout>
     </Layout>
