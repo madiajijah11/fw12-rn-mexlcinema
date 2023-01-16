@@ -57,22 +57,29 @@ const Info = ({ user }) => {
   const token = useSelector((state) => state.auth.token);
 
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    if (!result.canceled) {
-      const formData = new FormData();
-      formData.append("picture", {
-        uri: result.assets[0].uri,
-        type: "image/jpeg",
-        name: "picture",
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
       });
-      await http(token).patch("/api/v1/profile/upload", formData);
-      Alert.alert("Success", "Picture has been changed");
-      dispatch(getUserInfo());
+      if (!result.canceled) {
+        const formData = new FormData();
+        formData.append("picture", {
+          uri: result.assets[0].uri,
+          type: "image/jpeg",
+          name: "picture",
+        });
+        const { data } = await http(token).patch(
+          "/api/v1/profile/upload",
+          formData
+        );
+        Alert.alert("Success", "Picture has been changed");
+        dispatch(getUserInfo());
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

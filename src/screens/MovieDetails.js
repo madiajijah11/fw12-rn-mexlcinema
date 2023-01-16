@@ -286,7 +286,7 @@ const SecondSection = ({ id }) => {
         movieId: id,
         cinemaId: selectedCinema,
         bookingDate: date,
-        bookingTime: selectedTime,
+        bookingTime: convertTime(selectedTime),
       })
     );
     navigation.navigate("OrderPage");
@@ -381,16 +381,18 @@ const SecondSection = ({ id }) => {
                     width: "25%",
                     textAlign: "center",
                     backgroundColor:
-                      cinema.id === selectedCinema && time.time === selectedTime
+                      cinema.cinemaId === selectedCinema &&
+                      time.time === selectedTime
                         ? "#3567ff"
                         : "transparent",
                     borderRadius: 5,
                     color:
-                      cinema.id === selectedCinema && time.time === selectedTime
+                      cinema.cinemaId === selectedCinema &&
+                      time.time === selectedTime
                         ? "white"
                         : "black",
                   }}
-                  onPress={() => selectTime(time.time, cinema.id)}
+                  onPress={() => selectTime(time.time, cinema.cinemaId)}
                 >
                   {time.time ? convertTime(time.time) : "00:00"}
                 </Text>
@@ -417,9 +419,9 @@ const SecondSection = ({ id }) => {
             </Layout>
             <Button
               style={{
-                opacity: selectedCinema !== cinema.id ? 0.5 : 1,
+                opacity: selectedCinema !== cinema.cinemaId ? 0.5 : 1,
               }}
-              disabled={selectedCinema !== cinema.id}
+              disabled={selectedCinema !== cinema.cinemaId}
               onPress={token ? book : () => navigation.navigate("Login")}
             >
               Book Now

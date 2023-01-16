@@ -58,7 +58,6 @@ const FirstSection = () => {
   const [paginating, setPaginating] = useState(1);
   const [month, setMonth] = useState("");
   const [order, setOrder] = useState("");
-  console.log(search);
 
   const displayValue = orders[selectedIndex.row];
 
