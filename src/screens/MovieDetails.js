@@ -7,6 +7,7 @@ import {
   Card,
   Divider,
   Button,
+  IndexPath,
 } from "@ui-kitten/components";
 import { Image } from "@rneui/themed";
 import HeaderBar from "../components/HeaderBar";
@@ -244,6 +245,8 @@ const SecondSection = ({ id }) => {
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedCinema, setSelectedCinema] = useState("");
   const token = useSelector((state) => state.auth.token);
+  const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
+  const displayValue = location[selectedIndex.row];
 
   const ImgURL = `https://adventurous-baseball-cap-newt.cyclic.app/assets/uploads/`;
 
@@ -256,20 +259,20 @@ const SecondSection = ({ id }) => {
   }, [id, city, date]);
 
   const getLocation = async () => {
-    const { data } = await http().get(`/movies/${id}/schedules/city`, {
+    const { data } = await http().get(`/api/v1/movies/${id}/schedules/city`, {
       params: { date },
     });
-    setLocation(data.data);
-    if (data.data.length) {
-      setCity(data.data[0].name);
+    setLocation(data.results);
+    if (data.results.length) {
+      setCity(data.results[0]);
     }
   };
 
   const getSchedule = async (id, city, date) => {
-    const { data } = await http().get(`/movies/${id}/schedules`, {
+    const { data } = await http().get(`/api/v1/movies/${id}/schedules`, {
       params: { city, date },
     });
-    setSchedule(data.data);
+    setSchedule(data.results);
   };
 
   const selectTime = (time, cinema) => {
@@ -289,6 +292,12 @@ const SecondSection = ({ id }) => {
     navigation.navigate("OrderPage");
   };
 
+  // convert timestamp to times
+  const convertTime = (timestamp) => {
+    const time = new Date(timestamp).toLocaleTimeString();
+    return time;
+  };
+
   return (
     <Layout>
       <Layout
@@ -305,11 +314,16 @@ const SecondSection = ({ id }) => {
             marginVertical: 10,
           }}
         />
-        <Select onSelect={(index) => setCity(location[index.row].name)}>
-          {location?.map((city) => (
-            <Pressable key={city?.name}>
-              <SelectItem title={city?.name} />
-            </Pressable>
+        <Select
+          onSelect={(index) => {
+            setSelectedIndex(index);
+            setCity(location[index.row]);
+          }}
+          placeholder="Default"
+          value={displayValue}
+        >
+          {location?.map((city, index) => (
+            <SelectItem key={index + 1} title={city} />
           ))}
         </Select>
         {schedule?.map((cinema) => (
@@ -326,9 +340,9 @@ const SecondSection = ({ id }) => {
                 alignItems: "center",
               }}
             >
-              {cinema?.picture ? (
+              {cinema?.cinemas?.picture ? (
                 <Image
-                  source={{ uri: ImgURL + cinema?.picture }}
+                  source={{ uri: ImgURL + cinema?.cinemas.picture }}
                   style={{
                     width: 100,
                     height: 75,
@@ -346,7 +360,7 @@ const SecondSection = ({ id }) => {
                 />
               )}
               <Text category="s2">
-                {cinema.address}, {cinema.city}
+                {cinema.cinemas.address}, {cinema.cinemas.city}
               </Text>
             </Layout>
             <Divider
@@ -360,25 +374,25 @@ const SecondSection = ({ id }) => {
                 flexWrap: "wrap",
               }}
             >
-              {cinema?.time?.map((time, index) => (
+              {cinema?.movieScheduleTimes?.map((time, index) => (
                 <Text
                   key={index + 1}
                   style={{
                     width: "25%",
                     textAlign: "center",
                     backgroundColor:
-                      cinema.id === selectedCinema && time === selectedTime
+                      cinema.id === selectedCinema && time.time === selectedTime
                         ? "#3567ff"
                         : "transparent",
                     borderRadius: 5,
                     color:
-                      cinema.id === selectedCinema && time === selectedTime
+                      cinema.id === selectedCinema && time.time === selectedTime
                         ? "white"
                         : "black",
                   }}
-                  onPress={() => selectTime(time, cinema.id)}
+                  onPress={() => selectTime(time.time, cinema.id)}
                 >
-                  {time}
+                  {time.time ? convertTime(time.time) : "00:00"}
                 </Text>
               ))}
             </Layout>

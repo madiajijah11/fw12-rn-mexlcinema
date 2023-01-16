@@ -7,7 +7,12 @@ import {
   TabBar,
   Text,
 } from "@ui-kitten/components";
-import { KeyboardAvoidingView, Platform, Pressable } from "react-native";
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import HeaderBar from "../components/HeaderBar";
 import Footer from "../components/Footer";
@@ -22,6 +27,9 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/reducers/auth";
+import http from "../helpers/http";
+import { getUserInfo } from "../redux/actions/profile";
+import * as ImagePicker from "expo-image-picker";
 
 const TopTabBar = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -46,7 +54,28 @@ const TopTabBar = () => {
 const Info = ({ user }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const ImgURL = `https://adventurous-baseball-cap-newt.cyclic.app/assets/uploads/`;
+  const token = useSelector((state) => state.auth.token);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!result.canceled) {
+      const formData = new FormData();
+      formData.append("picture", {
+        uri: result.assets[0].uri,
+        type: "image/jpeg",
+        name: "picture",
+      });
+      await http(token).patch("/api/v1/profile/upload", formData);
+      Alert.alert("Success", "Picture has been changed");
+      dispatch(getUserInfo());
+    }
+  };
+
   return (
     <Layout>
       <Layout
@@ -63,27 +92,29 @@ const Info = ({ user }) => {
               alignItems: "center",
             }}
           >
-            {user?.picture ? (
-              <Image
-                source={{ uri: ImgURL + user.picture }}
-                style={{
-                  width: 100,
-                  height: 100,
-                  resizeMode: "cover",
-                  borderRadius: 100,
-                }}
-              />
-            ) : (
-              <Image
-                source={Picture}
-                style={{
-                  width: 100,
-                  height: 100,
-                  resizeMode: "cover",
-                  borderRadius: 100,
-                }}
-              />
-            )}
+            <TouchableOpacity onPress={pickImage}>
+              {user?.picture ? (
+                <Image
+                  source={{ uri: user.picture }}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    resizeMode: "cover",
+                    borderRadius: 100,
+                  }}
+                />
+              ) : (
+                <Image
+                  source={Picture}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    resizeMode: "cover",
+                    borderRadius: 100,
+                  }}
+                />
+              )}
+            </TouchableOpacity>
             <Text>
               {user?.firstName || user?.lastName
                 ? `${user?.firstName} ${user?.lastName}`
@@ -122,6 +153,8 @@ const UpdateProfileSchema = Yup.object().shape({
 });
 
 const AccountSettings = ({ user }) => {
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
   const {
     control,
     handleSubmit,
@@ -137,8 +170,16 @@ const AccountSettings = ({ user }) => {
     },
   });
 
-  const onSubmit = (data) => {
-    Alert.alert("Form Data", JSON.stringify(data));
+  const onSubmit = async (values) => {
+    try {
+      await http(token).patch("/api/v1/profile/edit", {
+        ...values,
+      });
+      dispatch(getUserInfo());
+      Alert.alert("Success", "Profile updated successfully");
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <Layout>
@@ -207,7 +248,7 @@ const AccountSettings = ({ user }) => {
           />
         </Card>
         <Button
-          onPress={() => handleSubmit(onSubmit)}
+          onPress={handleSubmit(onSubmit)}
           disabled={!isDirty || isSubmitting}
           style={{
             marginVertical: 10,
@@ -238,6 +279,7 @@ const ChangePasswordSchema = Yup.object().shape({
 });
 
 const ChangePassword = () => {
+  const token = useSelector((state) => state.auth.token);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = () => {
@@ -257,8 +299,15 @@ const ChangePassword = () => {
     },
   });
 
-  const onSubmit = (data) => {
-    Alert.alert("Form Data", JSON.stringify(data));
+  const onSubmit = async (values) => {
+    try {
+      await http(token).patch("/api/v1/profile/changePassword", {
+        ...values,
+      });
+      Alert.alert("Success", "Password changed successfully");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

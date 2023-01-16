@@ -6,8 +6,8 @@ export const getUserInfo = createAsyncThunk(
   async (arg, { getState, rejectWithValue }) => {
     try {
       const { auth } = getState();
-      const { data } = await http(auth.token).get("/profile");
-      return data.data;
+      const { data } = await http(auth.token).get("/api/v1/profile");
+      return data.results;
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);

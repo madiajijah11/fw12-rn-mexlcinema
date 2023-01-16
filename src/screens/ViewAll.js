@@ -4,16 +4,16 @@ import {
   Layout,
   Text,
   Input,
-  List,
   Button,
+  IndexPath,
 } from "@ui-kitten/components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import http from "../helpers/http";
 
 import HeaderBar from "../components/HeaderBar";
 import Footer from "../components/Footer";
 import { ScrollView } from "react-native-gesture-handler";
 import { KeyboardAvoidingView } from "react-native";
-import Months from "../components/Months";
 import MovieCard from "../components/MovieCard";
 
 import SpiderMan from "../../assets/Rectangle-119.png";
@@ -48,81 +48,149 @@ const data = [
   },
 ];
 
+const orders = ["desc", "asc"];
+
 const FirstSection = () => {
-  const [selectedIndex, setSelectedIndex] = useState();
-  return (
-    <Layout>
-      <Layout
-        style={{
-          padding: 10,
-        }}
-      >
-        <Text category="h6">List Movie</Text>
-        <Select
-          style={{
-            marginVertical: 10,
-          }}
-          selectedIndex={selectedIndex}
-          onSelect={(index) => setSelectedIndex(index)}
-        >
-          <SelectItem title="Latest" />
-          <SelectItem title="Oldest" />
-        </Select>
-        <Input placeholder="Search Movie Name ..." />
-      </Layout>
-    </Layout>
-  );
-};
+  const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
+  const [movies, setMovies] = useState([]);
+  const [search, setSearch] = useState("");
+  const [months, setMonths] = useState([]);
+  const [paginating, setPaginating] = useState(1);
+  const [month, setMonth] = useState("");
+  const [order, setOrder] = useState("");
+  console.log(search);
 
-const SecondSection = () => {
-  const renderItem = ({ item }) => <MovieCard item={item} />;
+  const displayValue = orders[selectedIndex.row];
+
+  const fetchMonths = async () => {
+    try {
+      const response = await http().get("/api/v1/months");
+      setMonths(response.data.results);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onSubmit = async () => {
+    try {
+      const fetchMovies = async () => {
+        const response = await http().get(
+          `/api/v1/movies?month=${month}&search=${search}&page=${paginating}&order=${order}&limit=4`
+        );
+        setMovies(response.data.results);
+      };
+      fetchMovies();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMonths();
+    const fetchMovies = async () => {
+      try {
+        const response = await http().get(
+          `/api/v1/movies?month=${month}&page=${paginating}&order=${order}&limit=4`
+        );
+        setMovies(response.data.results);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchMovies();
+  }, [month, paginating, order]);
 
   return (
-    <Layout>
-      <Layout
-        style={{
-          padding: 10,
-        }}
-      >
-        <Months />
-        <List data={data} renderItem={renderItem} initialNumToRender={4} />
+    <>
+      <Layout>
         <Layout
           style={{
-            flexDirection: "row",
-            justifyContent: "center",
+            padding: 10,
           }}
         >
-          <Button
+          <Text category="h6">List Movie</Text>
+          <Select
             style={{
-              marginHorizontal: 5,
+              marginVertical: 10,
             }}
+            selectedIndex={selectedIndex}
+            onSelect={(index) => {
+              setSelectedIndex(index);
+              setOrder(orders[index.row]);
+            }}
+            value={displayValue}
           >
-            1
-          </Button>
+            {orders.map((item) => (
+              <SelectItem key={item} title={item} />
+            ))}
+          </Select>
+          <Input
+            placeholder="Search Movie Name ..."
+            value={search}
+            onChangeText={(e) => setSearch(e)}
+          />
           <Button
-            style={{
-              marginHorizontal: 5,
-            }}
+            onPress={onSubmit}
+            style={{ marginVertical: 10 }}
+            size="small"
           >
-            2
-          </Button>
-          <Button
-            style={{
-              marginHorizontal: 5,
-            }}
-          >
-            3
-          </Button>
-          <Button
-            style={{
-              marginHorizontal: 5,
-            }}
-          >
-            4
+            Search
           </Button>
         </Layout>
       </Layout>
-    </Layout>
+      <Layout>
+        <Layout
+          style={{
+            padding: 10,
+          }}
+        >
+          <ScrollView horizontal>
+            {months?.map((item) => (
+              <Button
+                key={item.id}
+                style={{
+                  margin: 5,
+                }}
+              >
+                {item.name}
+              </Button>
+            ))}
+          </ScrollView>
+          <Layout>
+            {movies?.map((item) => (
+              <MovieCard key={item.id} item={item} />
+            ))}
+          </Layout>
+          <Layout
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            <Button
+              onPress={() => setPaginating(paginating - 1)}
+              disabled={paginating === 1}
+            >
+              Prev
+            </Button>
+            <Button
+              status="info"
+              style={{
+                marginHorizontal: 10,
+              }}
+            >
+              {paginating}
+            </Button>
+            <Button
+              onPress={() => setPaginating(paginating + 1)}
+              disabled={movies.length < 4}
+            >
+              Next
+            </Button>
+          </Layout>
+        </Layout>
+      </Layout>
+    </>
   );
 };
 
@@ -134,7 +202,6 @@ const ViewAll = () => {
       <ScrollView>
         <HeaderBar />
         <FirstSection />
-        <SecondSection />
         <Footer />
       </ScrollView>
     </KeyboardAvoidingView>

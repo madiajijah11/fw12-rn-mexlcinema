@@ -53,8 +53,8 @@ const NowShowing = ({ navigation }) => {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await http().get("/movies/nowshowing");
-        setMovies(response.data.data);
+        const response = await http().get("/api/v1/movies/nowShowing");
+        setMovies(response.data.results);
       } catch (error) {
         console.log(error);
       }
@@ -92,18 +92,29 @@ const NowShowing = ({ navigation }) => {
 
 const UpComing = ({ navigation }) => {
   const [movies, setMovies] = useState([]);
+  const [months, setMonths] = useState([]);
 
   useEffect(() => {
+    fetchMonths();
     const fetchMovies = async () => {
       try {
-        const response = await http().get("/movies/upcoming");
-        setMovies(response.data.data);
+        const response = await http().get("/api/v1/movies/upComing");
+        setMovies(response.data.results);
       } catch (error) {
         console.log(error);
       }
     };
     fetchMovies();
   }, []);
+
+  const fetchMonths = async () => {
+    try {
+      const response = await http().get("/api/v1/months");
+      setMonths(response.data.results);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Layout>
@@ -123,7 +134,18 @@ const UpComing = ({ navigation }) => {
             view all
           </Text>
         </Layout>
-        <Months />
+        <ScrollView horizontal>
+          {months?.map((item) => (
+            <Button
+              key={item.id}
+              style={{
+                margin: 5,
+              }}
+            >
+              {item.name}
+            </Button>
+          ))}
+        </ScrollView>
         <ScrollView horizontal>
           {movies?.map((item) => (
             <MovieCard key={item.id} item={item} />
