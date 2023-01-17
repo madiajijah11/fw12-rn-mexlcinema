@@ -58,22 +58,27 @@ const Info = ({ user }) => {
 
   const pickImage = async () => {
     try {
+      const permissionResult =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (permissionResult.granted === false) {
+        alert("You've refused to allow this app to access your photos!");
+        return;
+      }
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
       });
-      console.log(result);
-      if (result?.assets[0].fileSize > 3000000) {
-        Alert.alert("Error", "File size must be less than 3MB");
-        return;
-      }
-      if (result?.assets[0].type !== "image") {
-        Alert.alert("Error", "File must be an image");
-        return;
-      }
       if (!result?.canceled) {
+        if (result?.assets[0].fileSize > 3000000) {
+          Alert.alert("Error", "File size must be less than 3MB");
+          return;
+        }
+        if (result?.assets[0].type !== "image") {
+          Alert.alert("Error", "File must be an image");
+          return;
+        }
         const formData = new FormData();
         formData.append("picture", {
           uri: result?.assets[0].uri,
@@ -83,11 +88,53 @@ const Info = ({ user }) => {
         await http(token).patch("/api/v1/profile/upload", formData);
         Alert.alert("Success", "Picture has been changed");
         dispatch(getUserInfo(token));
-      } else {
-        console.log("Cancelled");
+        return;
       }
     } catch (error) {
+      console.log(error);
       Alert.alert("Error", "Failed to upload picture");
+      return;
+    }
+  };
+
+  const takePicture = async () => {
+    try {
+      const permissionResult =
+        await ImagePicker.requestCameraPermissionsAsync();
+      if (permissionResult.granted === false) {
+        Alert.alert("You've refused to allow this app to access your camera!");
+        return;
+      }
+      let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      if (!result?.canceled) {
+        if (result?.assets[0].fileSize > 3000000) {
+          Alert.alert("Error", "File size must be less than 3MB");
+          return;
+        }
+        if (result?.assets[0].type !== "image") {
+          Alert.alert("Error", "File must be an image");
+          return;
+        }
+        const formData = new FormData();
+        formData.append("picture", {
+          uri: result?.assets[0].uri,
+          type: "image/jpeg",
+          name: "picture",
+        });
+        await http(token).patch("/api/v1/profile/upload", formData);
+        Alert.alert("Success", "Picture has been changed");
+        dispatch(getUserInfo(token));
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "Failed to upload picture");
+      return;
     }
   };
 
@@ -107,29 +154,58 @@ const Info = ({ user }) => {
               alignItems: "center",
             }}
           >
-            <TouchableOpacity onPress={pickImage}>
-              {user?.picture ? (
-                <Image
-                  source={{ uri: user.picture }}
-                  style={{
-                    width: 100,
-                    height: 100,
-                    resizeMode: "cover",
-                    borderRadius: 100,
-                  }}
-                />
-              ) : (
-                <Image
-                  source={Picture}
-                  style={{
-                    width: 100,
-                    height: 100,
-                    resizeMode: "cover",
-                    borderRadius: 100,
-                  }}
-                />
-              )}
-            </TouchableOpacity>
+            {user?.picture ? (
+              <Image
+                source={{ uri: user.picture }}
+                style={{
+                  width: 100,
+                  height: 100,
+                  resizeMode: "cover",
+                  borderRadius: 100,
+                  borderWidth: 1,
+                  borderColor: "#3567ff",
+                }}
+              />
+            ) : (
+              <Image
+                source={Picture}
+                style={{
+                  width: 100,
+                  height: 100,
+                  resizeMode: "cover",
+                  borderRadius: 100,
+                  borderWidth: 1,
+                  borderColor: "#3567ff",
+                }}
+              />
+            )}
+            <Text>Change Picture</Text>
+            <Layout
+              style={{
+                flexDirection: "row",
+                marginVertical: 10,
+              }}
+            >
+              <Button
+                status="info"
+                appearance="outline"
+                size="small"
+                onPress={pickImage}
+                style={{
+                  marginRight: 10,
+                }}
+              >
+                Gallery
+              </Button>
+              <Button
+                status="info"
+                appearance="outline"
+                size="small"
+                onPress={takePicture}
+              >
+                Camera
+              </Button>
+            </Layout>
             <Text>
               {user?.firstName || user?.lastName
                 ? `${user?.firstName} ${user?.lastName}`
