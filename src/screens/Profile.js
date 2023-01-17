@@ -64,22 +64,30 @@ const Info = ({ user }) => {
         aspect: [4, 3],
         quality: 1,
       });
-      if (!result.canceled) {
+      console.log(result);
+      if (result?.assets[0].fileSize > 3000000) {
+        Alert.alert("Error", "File size must be less than 3MB");
+        return;
+      }
+      if (result?.assets[0].type !== "image") {
+        Alert.alert("Error", "File must be an image");
+        return;
+      }
+      if (!result?.canceled) {
         const formData = new FormData();
         formData.append("picture", {
-          uri: result.assets[0].uri,
+          uri: result?.assets[0].uri,
           type: "image/jpeg",
           name: "picture",
         });
-        const { data } = await http(token).patch(
-          "/api/v1/profile/upload",
-          formData
-        );
+        await http(token).patch("/api/v1/profile/upload", formData);
         Alert.alert("Success", "Picture has been changed");
-        dispatch(getUserInfo());
+        dispatch(getUserInfo(token));
+      } else {
+        console.log("Cancelled");
       }
     } catch (error) {
-      console.log(error);
+      Alert.alert("Error", "Failed to upload picture");
     }
   };
 

@@ -64,14 +64,14 @@ const Register = () => {
   const onSubmit = async (values) => {
     try {
       const { firstName, lastName, phoneNumber, email, password } = values;
-      const { data } = await http().post("/auth/register", {
+      const { data } = await http().post("/api/v1/auth/register", {
         firstName,
         lastName,
         phoneNumber,
         email,
         password,
       });
-      dispatch(setToken(data.data.token));
+      dispatch(setToken(data.token));
       navigation.navigate("Home");
     } catch (error) {
       Alert.alert("Error", error.response.data.message);

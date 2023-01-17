@@ -52,11 +52,11 @@ const Login = () => {
   const onSubmit = async (values) => {
     try {
       const { email, password } = values;
-      const { data } = await http().post("/auth/login", {
+      const { data } = await http().post("/api/v1/auth/login", {
         email,
         password,
       });
-      dispatch(setToken(data.data.token));
+      dispatch(setToken(data.token));
       navigation.navigate("Home");
     } catch (error) {
       Alert.alert("Error", error.response.data.message);

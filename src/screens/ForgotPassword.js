@@ -31,10 +31,10 @@ const ForgotPassword = () => {
 
   const onSubmit = async (values) => {
     try {
-      const { data } = await http().post("/auth/forgotpassword", {
+      const { data } = await http().post("/api/v1/auth/forgotPassword", {
         email: values.email,
       });
-      if (data.success === true) {
+      if (data.status === true) {
         Alert.alert("Success", data.message);
         navigation.navigate("ResetPassword", {
           email: values.email,

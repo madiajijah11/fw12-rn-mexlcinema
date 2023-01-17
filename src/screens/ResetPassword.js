@@ -51,16 +51,14 @@ const ResetPassword = ({ route }) => {
   });
 
   const onSubmit = async (values) => {
-    // Alert.alert("Form Data", JSON.stringify(values));
     try {
-      const { code, password, confirmPassword } = values;
-      const { data } = await http().post("/auth/resetpassword", {
+      const { code, password } = values;
+      const { data } = await http().post("/api/v1/auth/resetPassword", {
         email: route.params.email,
         code,
         password,
-        confirmPassword,
       });
-      if (data.success === true) {
+      if (data.status === true) {
         Alert.alert("Success", data.message);
         navigation.navigate("Login");
       }
