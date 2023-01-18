@@ -87,8 +87,6 @@ const PaymentMethods = () => {
   const userId = useSelector((state) => state.profile.userInfo.id);
   const token = useSelector((state) => state.auth.token);
 
-  const ImgURL = `https://adventurous-baseball-cap-newt.cyclic.app/assets/uploads/`;
-
   useEffect(() => {
     getPaymentList();
   }, []);
@@ -111,26 +109,24 @@ const PaymentMethods = () => {
       phoneNumber: "",
     },
   });
+  console.log({ ...dataTransaction });
 
   const onSubmit = async (values) => {
     try {
-      const { data } = await http(token).post("/transactions/checkout", {
+      const { data } = await http(token).post("/api/v1/transactions/checkout", {
         userId,
         ...dataTransaction,
         paymentMethodId: selectedPayment,
         ...values,
       });
-      // console.log(data);
-      if (data.data.status === "success") {
-        Alert.alert("Success", data.message);
-        navigation.navigate("Home");
-      } else {
-        Alert.alert("Error", data.data.message);
-      }
+      Alert.alert("Success", data.message);
+      navigation.navigate("History");
     } catch (error) {
+      console.log(error);
       Alert.alert("Error", "Something went wrong");
     }
   };
+
   return (
     <>
       <Layout>
@@ -165,7 +161,7 @@ const PaymentMethods = () => {
                     <Pressable onPress={() => setSelectedPayment(item.id)}>
                       {item.picture ? (
                         <Image
-                          source={{ uri: ImgURL + item.picture }}
+                          source={{ uri: item.picture }}
                           style={{
                             height: 75,
                             width: 95,

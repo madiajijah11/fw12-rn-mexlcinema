@@ -6,10 +6,6 @@ const initialState = {
   bookingDate: null,
   bookingTime: null,
   seatNum: null,
-  fullName: null,
-  email: null,
-  phoneNumber: null,
-  paymentMethodId: null,
 };
 
 const transactionSlice = createSlice({
@@ -29,14 +25,6 @@ const transactionSlice = createSlice({
       state = {
         ...state,
         ...{ seatNum },
-      };
-      return state;
-    },
-    choosePayment: (state, action) => {
-      const { paymentMethodId, fullName, email, phoneNumber } = action.payload;
-      state = {
-        ...state,
-        ...{ paymentMethodId, fullName, email, phoneNumber },
       };
       return state;
     },

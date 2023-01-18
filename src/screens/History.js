@@ -42,7 +42,6 @@ const OrderHistory = () => {
   const navigation = useNavigation();
   const token = useSelector((state) => state.auth.token);
   const [history, setHistory] = useState([]);
-  const ImgURL = `https://adventurous-baseball-cap-newt.cyclic.app/assets/uploads/`;
 
   useEffect(() => {
     const history = async () => {
@@ -68,35 +67,12 @@ const OrderHistory = () => {
           padding: 10,
         }}
       >
-        {/* <Card disabled>
-          <Image
-            source={ebvid}
-            style={{
-              width: 100,
-              height: 75,
-              resizeMode: "contain",
-            }}
-          />
-          <Text>Tuesday, 07 July 2020 - 04:30pm</Text>
-          <Text>Spider-Man: Homecoming</Text>
-          <Divider
-            style={{
-              marginVertical: 10,
-            }}
-          />
-          <Button
-            status="success"
-            onPress={() => navigation.navigate("Ticket")}
-          >
-            Ticket in active
-          </Button>
-        </Card> */}
         {history?.map((item) => {
           return (
             <Card disabled key={item?.id}>
               {item.cinemaPicture ? (
                 <Image
-                  source={{ uri: ImgURL + item.cinemaPicture }}
+                  source={{ uri: item.cinemaPicture }}
                   style={{
                     width: 100,
                     height: 75,

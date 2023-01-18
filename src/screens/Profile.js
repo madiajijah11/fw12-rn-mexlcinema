@@ -3,6 +3,7 @@ import {
   Card,
   Divider,
   Layout,
+  Spinner,
   Tab,
   TabBar,
   Text,
@@ -56,6 +57,8 @@ const Info = ({ user }) => {
   const navigation = useNavigation();
   const token = useSelector((state) => state.auth.token);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const pickImage = async () => {
     try {
       const permissionResult =
@@ -79,6 +82,7 @@ const Info = ({ user }) => {
           Alert.alert("Error", "File must be an image");
           return;
         }
+        setIsLoading(true);
         const formData = new FormData();
         formData.append("picture", {
           uri: result?.assets[0].uri,
@@ -88,11 +92,13 @@ const Info = ({ user }) => {
         await http(token).patch("/api/v1/profile/upload", formData);
         Alert.alert("Success", "Picture has been changed");
         dispatch(getUserInfo(token));
+        setIsLoading(false);
         return;
       }
     } catch (error) {
       console.log(error);
       Alert.alert("Error", "Failed to upload picture");
+      setIsLoading(false);
       return;
     }
   };
@@ -120,6 +126,7 @@ const Info = ({ user }) => {
           Alert.alert("Error", "File must be an image");
           return;
         }
+        setIsLoading(true);
         const formData = new FormData();
         formData.append("picture", {
           uri: result?.assets[0].uri,
@@ -129,11 +136,13 @@ const Info = ({ user }) => {
         await http(token).patch("/api/v1/profile/upload", formData);
         Alert.alert("Success", "Picture has been changed");
         dispatch(getUserInfo(token));
+        setIsLoading(false);
         return;
       }
     } catch (error) {
       console.log(error);
       Alert.alert("Error", "Failed to upload picture");
+      setIsLoading(false);
       return;
     }
   };
@@ -154,6 +163,17 @@ const Info = ({ user }) => {
               alignItems: "center",
             }}
           >
+            {isLoading && (
+              <Layout
+                style={{
+                  borderRadius: 4,
+                  padding: 12,
+                  backgroundColor: "#3366FF",
+                }}
+              >
+                <Spinner size="giant" />
+              </Layout>
+            )}
             {user?.picture ? (
               <Image
                 source={{ uri: user.picture }}
@@ -191,6 +211,7 @@ const Info = ({ user }) => {
                 appearance="outline"
                 size="small"
                 onPress={pickImage}
+                disabled={isLoading}
                 style={{
                   marginRight: 10,
                 }}
@@ -202,6 +223,7 @@ const Info = ({ user }) => {
                 appearance="outline"
                 size="small"
                 onPress={takePicture}
+                disabled={isLoading}
               >
                 Camera
               </Button>

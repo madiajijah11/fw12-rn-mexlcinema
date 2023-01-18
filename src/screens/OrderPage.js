@@ -70,10 +70,10 @@ const SelectSeats = () => {
                                 >
                                   <Layout
                                     style={{
-                                      margin: 2,
+                                      margin: 1,
                                       borderRadius: 5,
-                                      width: 20,
-                                      height: 20,
+                                      width: 17,
+                                      height: 17,
                                       backgroundColor:
                                         (selectedSeat.includes(seatNumber) &&
                                           "#3567ff") ||
@@ -113,10 +113,10 @@ const SelectSeats = () => {
                                 >
                                   <Layout
                                     style={{
-                                      margin: 2,
+                                      margin: 1,
                                       borderRadius: 5,
-                                      width: 20,
-                                      height: 20,
+                                      width: 17,
+                                      height: 17,
                                       backgroundColor:
                                         (selectedSeat.includes(seatNumber) &&
                                           "#3567ff") ||
@@ -162,7 +162,8 @@ const SelectSeats = () => {
                       style={{
                         margin: 2,
                         borderRadius: 5,
-                        width: 23,
+                        width: 17,
+                        height: 17,
                         backgroundColor: "brown",
                       }}
                     >
@@ -179,7 +180,8 @@ const SelectSeats = () => {
                       style={{
                         margin: 2,
                         borderRadius: 5,
-                        width: 23,
+                        width: 17,
+                        height: 17,
                         backgroundColor: "cyan",
                       }}
                     >
@@ -201,7 +203,8 @@ const SelectSeats = () => {
                       style={{
                         margin: 2,
                         borderRadius: 5,
-                        width: 23,
+                        width: 17,
+                        height: 17,
                         backgroundColor: "#3567ff",
                       }}
                     >

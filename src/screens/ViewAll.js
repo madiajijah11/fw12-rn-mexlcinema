@@ -74,7 +74,7 @@ const FirstSection = () => {
     try {
       const fetchMovies = async () => {
         const response = await http().get(
-          `/api/v1/movies?month=${month}&search=${search}&page=${paginating}&order=${order}&limit=4`
+          `/api/v1/movies?search=${search}&page=${paginating}&order=${order}&limit=4`
         );
         setMovies(response.data.results);
       };
@@ -86,10 +86,13 @@ const FirstSection = () => {
 
   useEffect(() => {
     fetchMonths();
+  }, []);
+
+  useEffect(() => {
     const fetchMovies = async () => {
       try {
         const response = await http().get(
-          `/api/v1/movies?month=${month}&page=${paginating}&order=${order}&limit=4`
+          `/api/v1/movies?page=${paginating}&order=${order}&limit=4`
         );
         setMovies(response.data.results);
       } catch (error) {
@@ -97,7 +100,7 @@ const FirstSection = () => {
       }
     };
     fetchMovies();
-  }, [month, paginating, order]);
+  }, [paginating, order]);
 
   return (
     <>
@@ -150,6 +153,7 @@ const FirstSection = () => {
                 style={{
                   margin: 5,
                 }}
+                onPress={() => setMonth(item.id)}
               >
                 {item.name}
               </Button>

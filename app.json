@@ -1,28 +1,36 @@
 {
   "expo": {
-    "name": "fw12-rn-mexlcinema",
-    "slug": "fw12-rn-mexlcinema",
+    "name": "MexL Cinema",
+    "slug": "mexl-cinema",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/mexl_cinema-1-edit-removebg.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/mexl_cinema-1-edit-removebg.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "foregroundImage": "./assets/mexl_cinema-1-edit-removebg.png",
+        "backgroundColor": "#000",
+        "package": "com.mexlcinema",
+        "versionCode": 1
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.mexlcinema"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -34,6 +42,12 @@
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "9cbf7978-afbc-4050-874f-04e3c8e665b0"
+      }
+    },
+    "owner": "madiajijah11"
   }
 }

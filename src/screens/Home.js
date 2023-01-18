@@ -93,19 +93,35 @@ const NowShowing = ({ navigation }) => {
 const UpComing = ({ navigation }) => {
   const [movies, setMovies] = useState([]);
   const [months, setMonths] = useState([]);
+  const [selectedMonth, setSelectedMonth] = useState("");
 
   useEffect(() => {
     fetchMonths();
-    const fetchMovies = async () => {
+    fetchMovies();
+  }, []);
+
+  useEffect(() => {
+    const fetchMovieByMonth = async () => {
       try {
-        const response = await http().get("/api/v1/movies/upComing");
+        const response = await http().get(
+          `/api/v1/movies/upComing?month=${selectedMonth}`
+        );
         setMovies(response.data.results);
       } catch (error) {
         console.log(error);
       }
     };
-    fetchMovies();
-  }, []);
+    fetchMovieByMonth();
+  }, [selectedMonth]);
+
+  const fetchMovies = async () => {
+    try {
+      const response = await http().get("/api/v1/movies/upComing");
+      setMovies(response.data.results);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchMonths = async () => {
     try {
@@ -141,6 +157,7 @@ const UpComing = ({ navigation }) => {
               style={{
                 margin: 5,
               }}
+              onPress={() => setSelectedMonth(item.id)}
             >
               {item.name}
             </Button>

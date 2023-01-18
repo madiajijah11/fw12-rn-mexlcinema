@@ -6,7 +6,7 @@ const http = (token) => {
     headers.authorization = `Bearer ${token}`;
   }
   const instance = axios.create({
-    baseURL: "https://fair-lime-elk-hose.cyclic.app",
+    baseURL: "https://fw12-backend-delta.vercel.app",
     headers,
   });
   return instance;

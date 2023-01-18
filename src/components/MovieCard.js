@@ -2,8 +2,6 @@ import { Image, ListItem } from "@rneui/themed";
 import { Button, Card, Layout, Text } from "@ui-kitten/components";
 import { useNavigation } from "@react-navigation/native";
 
-const ImgURL = `https://adventurous-baseball-cap-newt.cyclic.app/assets/uploads/`;
-
 const MovieCard = ({ item }) => {
   const navigation = useNavigation();
 
@@ -34,7 +32,7 @@ const MovieCard = ({ item }) => {
       >
         {item.picture ? (
           <Image
-            source={{ uri: ImgURL + item.picture }}
+            source={{ uri: item.picture }}
             style={{
               width: 120,
               height: 170,

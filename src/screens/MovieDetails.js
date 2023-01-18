@@ -38,7 +38,6 @@ const data = {
 
 const FirstSection = ({ id }) => {
   const [movie, setMovie] = useState({});
-  const ImgURL = `https://adventurous-baseball-cap-newt.cyclic.app/assets/uploads/`;
 
   useEffect(() => {
     const getMovie = async () => {
@@ -78,6 +77,7 @@ const FirstSection = ({ id }) => {
         justifyContent: "center",
         alignItems: "center",
         paddingVertical: 20,
+        paddingHorizontal: 20,
       }}
     >
       <Layout
@@ -92,7 +92,7 @@ const FirstSection = ({ id }) => {
       >
         {movie?.picture ? (
           <Image
-            source={{ uri: ImgURL + movie.picture }}
+            source={{ uri: movie.picture }}
             style={{ width: 160, height: 250, borderRadius: 10 }}
           />
         ) : (
@@ -119,7 +119,7 @@ const FirstSection = ({ id }) => {
       >
         <Layout
           style={{
-            width: 180,
+            width: 160,
           }}
         >
           <Text>Release Date</Text>
@@ -133,7 +133,7 @@ const FirstSection = ({ id }) => {
         </Layout>
         <Layout
           style={{
-            width: 180,
+            width: 160,
           }}
         >
           <Text>Directed by</Text>
@@ -154,7 +154,7 @@ const FirstSection = ({ id }) => {
       >
         <Layout
           style={{
-            width: 180,
+            width: 160,
           }}
         >
           <Text>Duration</Text>
@@ -168,7 +168,7 @@ const FirstSection = ({ id }) => {
         </Layout>
         <Layout
           style={{
-            width: 180,
+            width: 160,
           }}
         >
           <Text>Casts</Text>
@@ -192,11 +192,7 @@ const FirstSection = ({ id }) => {
           </Text>
         </Layout>
       </Layout>
-      <Layout
-        style={{
-          width: 360,
-        }}
-      >
+      <Layout>
         <Text
           style={{
             fontSize: 18,
@@ -248,8 +244,6 @@ const SecondSection = ({ id }) => {
   const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
   const displayValue = location[selectedIndex.row];
 
-  const ImgURL = `https://adventurous-baseball-cap-newt.cyclic.app/assets/uploads/`;
-
   useEffect(() => {
     getLocation();
   }, [id]);
@@ -286,7 +280,7 @@ const SecondSection = ({ id }) => {
         movieId: id,
         cinemaId: selectedCinema,
         bookingDate: date,
-        bookingTime: convertTime(selectedTime),
+        bookingTime: selectedTime,
       })
     );
     navigation.navigate("OrderPage");
@@ -342,7 +336,7 @@ const SecondSection = ({ id }) => {
             >
               {cinema?.cinemas?.picture ? (
                 <Image
-                  source={{ uri: ImgURL + cinema?.cinemas.picture }}
+                  source={{ uri: cinema?.cinemas.picture }}
                   style={{
                     width: 100,
                     height: 75,
