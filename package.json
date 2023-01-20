@@ -5,7 +5,10 @@
     "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix",
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
   },
   "dependencies": {
     "@eva-design/eva": "^2.1.1",
@@ -24,6 +27,7 @@
     "dotenv": "^16.0.3",
     "expo": "~47.0.12",
     "expo-constants": "~14.0.2",
+    "expo-dev-client": "^2.0.1",
     "expo-image-picker": "~14.0.2",
     "expo-navigation-bar": "~2.0.1",
     "expo-splash-screen": "~0.17.5",
@@ -48,7 +52,17 @@
     "yup-password": "^0.2.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "eslint": "^8.32.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.32.1",
+    "prettier": "^2.8.3",
+    "react-native-dotenv": "^3.4.7"
   },
   "private": true
 }

@@ -1,5 +1,5 @@
-import axios from "axios";
-import * as dotenv from "dotenv";
+import axios from 'axios';
+import { API_URL } from '@env';
 
 const http = (token) => {
   const headers = {};
@@ -7,8 +7,8 @@ const http = (token) => {
     headers.authorization = `Bearer ${token}`;
   }
   const instance = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-    headers,
+    baseURL: API_URL,
+    headers
   });
   return instance;
 };

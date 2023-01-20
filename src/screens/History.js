@@ -1,39 +1,22 @@
-import { KeyboardAvoidingView, Platform } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import HeaderBar from "../components/HeaderBar";
-import Footer from "../components/Footer";
-import { useNavigation } from "@react-navigation/native";
-import {
-  Tab,
-  TabBar,
-  Card,
-  Text,
-  Divider,
-  Button,
-  Layout,
-} from "@ui-kitten/components";
-import { useEffect, useState } from "react";
-import { Image } from "@rneui/themed";
-import ebvid from "../../assets/Vector.png";
-import http from "../helpers/http";
-import { useSelector } from "react-redux";
+import { KeyboardAvoidingView, Platform } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import HeaderBar from '../components/HeaderBar';
+import Footer from '../components/Footer';
+import { useNavigation } from '@react-navigation/native';
+import { Tab, TabBar, Card, Text, Divider, Button, Layout } from '@ui-kitten/components';
+import { useEffect, useState } from 'react';
+import { Image } from '@rneui/themed';
+import ebvid from '../../assets/Vector.png';
+import http from '../helpers/http';
+import { useSelector } from 'react-redux';
 
 const TopTabBar = () => {
   const [selectedIndex, setSelectedIndex] = useState(1);
   const navigation = useNavigation();
   return (
-    <TabBar
-      selectedIndex={selectedIndex}
-      onSelect={(index) => setSelectedIndex(index)}
-    >
-      <Tab
-        title="Details Account"
-        onPress={() => navigation.navigate("Profile")}
-      />
-      <Tab
-        title="Order History"
-        onPress={() => navigation.navigate("History")}
-      />
+    <TabBar selectedIndex={selectedIndex} onSelect={(index) => setSelectedIndex(index)}>
+      <Tab title="Details Account" onPress={() => navigation.navigate('Profile')} />
+      <Tab title="Order History" onPress={() => navigation.navigate('History')} />
     </TabBar>
   );
 };
@@ -45,18 +28,18 @@ const OrderHistory = () => {
 
   useEffect(() => {
     const history = async () => {
-      const { data } = await http(token).get("/transactions/history");
+      const { data } = await http(token).get('/transactions/history');
       setHistory(data.data);
     };
     history();
   }, []);
 
   const convertDate = (date) => {
-    return new Date(date).toLocaleDateString("en-GB", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
+    return new Date(date).toLocaleDateString('en-GB', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
     });
   };
 
@@ -64,9 +47,8 @@ const OrderHistory = () => {
     <Layout>
       <Layout
         style={{
-          padding: 10,
-        }}
-      >
+          padding: 10
+        }}>
         {history?.map((item) => {
           return (
             <Card disabled key={item?.id}>
@@ -76,7 +58,7 @@ const OrderHistory = () => {
                   style={{
                     width: 100,
                     height: 75,
-                    resizeMode: "contain",
+                    resizeMode: 'contain'
                   }}
                 />
               ) : (
@@ -85,24 +67,20 @@ const OrderHistory = () => {
                   style={{
                     width: 100,
                     height: 75,
-                    resizeMode: "contain",
+                    resizeMode: 'contain'
                   }}
                 />
               )}
               <Text>
-                {item?.bookingDate ? convertDate(item?.bookingDate) : "N/A"} -{" "}
-                {item?.bookingTime}
+                {item?.bookingDate ? convertDate(item?.bookingDate) : 'N/A'} - {item?.bookingTime}
               </Text>
               <Text>{item?.title}</Text>
               <Divider
                 style={{
-                  marginVertical: 10,
+                  marginVertical: 10
                 }}
               />
-              <Button
-                status="success"
-                onPress={() => navigation.navigate("Ticket")}
-              >
+              <Button status="success" onPress={() => navigation.navigate('Ticket')}>
                 Ticket in active
               </Button>
             </Card>
@@ -115,9 +93,7 @@ const OrderHistory = () => {
 
 const History = () => {
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ScrollView>
         <HeaderBar />
         <TopTabBar />

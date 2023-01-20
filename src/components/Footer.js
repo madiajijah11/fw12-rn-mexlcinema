@@ -1,84 +1,74 @@
-import { View } from "react-native";
-import { Image, Text } from "@rneui/themed";
-import AntDesign from "@expo/vector-icons/AntDesign";
+import { View } from 'react-native';
+import { Image, Text } from '@rneui/themed';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
-import Logo from "../../assets/mexl_cinema-1-edit-removebg.png";
-import Sponsor1 from "../../assets/Vector.png";
-import Sponsor2 from "../../assets/Vector-1.png";
-import Sponsor3 from "../../assets/Vector-2.png";
+import Logo from '../../assets/mexl_cinema-1-edit-removebg.png';
+import Sponsor1 from '../../assets/Vector.png';
+import Sponsor2 from '../../assets/Vector-1.png';
+import Sponsor3 from '../../assets/Vector-2.png';
 
 const Footer = () => {
   return (
-    <View style={{ backgroundColor: "#3567ff", padding: 20 }}>
+    <View style={{ backgroundColor: '#3567ff', padding: 20 }}>
       <View>
         <Image
           source={Logo}
           style={{
             height: 100,
             width: 160,
-            resizeMode: "contain",
+            resizeMode: 'contain'
           }}
         />
-        <Text>
-          Stop waiting in line. Buy tickets conveniently, watch movies quietly.
-        </Text>
+        <Text>Stop waiting in line. Buy tickets conveniently, watch movies quietly.</Text>
       </View>
       <View
         style={{
-          marginTop: 10,
-        }}
-      >
+          marginTop: 10
+        }}>
         <Text
           style={{
-            fontWeight: "bold",
-          }}
-        >
+            fontWeight: 'bold'
+          }}>
           Explore
         </Text>
         <View
           style={{
-            flexDirection: "row",
-          }}
-        >
+            flexDirection: 'row'
+          }}>
           <Text
             style={{
-              margin: 2,
-            }}
-          >
+              margin: 2
+            }}>
             Home
           </Text>
           <Text
             style={{
-              margin: 2,
-            }}
-          >
+              margin: 2
+            }}>
             List Movie
           </Text>
         </View>
       </View>
       <View
         style={{
-          marginTop: 10,
-        }}
-      >
+          marginTop: 10
+        }}>
         <Text
           style={{
-            fontWeight: "bold",
-          }}
-        >
+            fontWeight: 'bold'
+          }}>
           Our Sponsors
         </Text>
         <View
           style={{
-            flexDirection: "row",
-          }}
-        >
+            flexDirection: 'row'
+          }}>
           <Image
             source={Sponsor1}
             style={{
               height: 50,
               width: 100,
-              resizeMode: "center",
+              resizeMode: 'center'
             }}
           />
           <Image
@@ -86,7 +76,7 @@ const Footer = () => {
             style={{
               height: 50,
               width: 100,
-              resizeMode: "center",
+              resizeMode: 'center'
             }}
           />
           <Image
@@ -94,7 +84,7 @@ const Footer = () => {
             style={{
               height: 50,
               width: 100,
-              resizeMode: "center",
+              resizeMode: 'center'
             }}
           />
         </View>
@@ -102,19 +92,17 @@ const Footer = () => {
       <View style={{ marginVertical: 10 }}>
         <Text
           style={{
-            fontWeight: "bold",
-          }}
-        >
+            fontWeight: 'bold'
+          }}>
           Follow us
         </Text>
         <View
           style={{
-            flexDirection: "row",
-          }}
-        >
+            flexDirection: 'row'
+          }}>
           <AntDesign
             style={{
-              marginHorizontal: 5,
+              marginHorizontal: 5
             }}
             name="facebook-square"
             size={24}
@@ -122,7 +110,7 @@ const Footer = () => {
           />
           <AntDesign
             style={{
-              marginHorizontal: 5,
+              marginHorizontal: 5
             }}
             name="instagram"
             size={24}
@@ -130,7 +118,7 @@ const Footer = () => {
           />
           <AntDesign
             style={{
-              marginHorizontal: 5,
+              marginHorizontal: 5
             }}
             name="twitter"
             size={24}
@@ -138,7 +126,7 @@ const Footer = () => {
           />
           <AntDesign
             style={{
-              marginHorizontal: 5,
+              marginHorizontal: 5
             }}
             name="youtube"
             size={24}

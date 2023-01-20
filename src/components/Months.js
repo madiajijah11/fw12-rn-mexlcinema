@@ -1,19 +1,19 @@
-import { Button } from "@ui-kitten/components";
-import { ScrollView } from "react-native-gesture-handler";
+import { Button } from '@ui-kitten/components';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const months = [
-  "September",
-  "October",
-  "November",
-  "December",
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
+  'September',
+  'October',
+  'November',
+  'December',
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August'
 ];
 
 const Months = () => {
@@ -23,9 +23,8 @@ const Months = () => {
         <Button
           key={index + 1}
           style={{
-            margin: 5,
-          }}
-        >
+            margin: 5
+          }}>
           {item}
         </Button>
       ))}

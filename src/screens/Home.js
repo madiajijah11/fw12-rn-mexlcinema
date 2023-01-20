@@ -1,51 +1,19 @@
-import { Image, Card, Input } from "@rneui/themed";
-import { ScrollView } from "react-native-gesture-handler";
-import { Alert, KeyboardAvoidingView } from "react-native";
-import { useForm, Controller } from "react-hook-form";
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigation } from "@react-navigation/native";
-import { Layout, Button, Text } from "@ui-kitten/components";
+import { Image, Card, Input } from '@rneui/themed';
+import { ScrollView } from 'react-native-gesture-handler';
+import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useNavigation } from '@react-navigation/native';
+import { Layout, Button, Text } from '@ui-kitten/components';
 
-import HeaderBar from "../components/HeaderBar";
-import Footer from "../components/Footer";
+import HeaderBar from '../components/HeaderBar';
+import Footer from '../components/Footer';
 
-import DashboardImage from "../../assets/homepage.png";
-import SpiderMan from "../../assets/Rectangle-119.png";
-import LionKing from "../../assets/Rectangle-119-1.png";
-import JohnWick from "../../assets/Rectangle-119-2.png";
-import BlackWidow from "../../assets/Rectangle-139.png";
-import Months from "../components/Months";
-import MovieCard from "../components/MovieCard";
-import { useEffect, useState } from "react";
-import http from "../helpers/http";
-
-const data = [
-  {
-    id: 1,
-    picture: SpiderMan,
-    title: "Spider-Man: Homecoming",
-    genre: "Action, Adventure, Sci-Fi",
-  },
-  {
-    id: 2,
-    picture: LionKing,
-    title: "The Lion King",
-    genre: "Animation, Adventure, Drama",
-  },
-  {
-    id: 3,
-    picture: JohnWick,
-    title: "John Wick: Chapter 3 - Parabellum",
-    genre: "Action, Crime, Thriller",
-  },
-  {
-    id: 4,
-    picture: BlackWidow,
-    title: "Black Widow",
-    genre: "Action, Adventure, Sci-Fi",
-  },
-];
+import DashboardImage from '../../assets/homepage.png';
+import MovieCard from '../components/MovieCard';
+import { useEffect, useState } from 'react';
+import http from '../helpers/http';
 
 const NowShowing = ({ navigation }) => {
   const [movies, setMovies] = useState([]);
@@ -53,7 +21,7 @@ const NowShowing = ({ navigation }) => {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await http().get("/api/v1/movies/nowShowing");
+        const response = await http().get('/api/v1/movies/nowShowing');
         setMovies(response.data.results);
       } catch (error) {
         console.log(error);
@@ -67,16 +35,14 @@ const NowShowing = ({ navigation }) => {
       <Layout style={{ marginVertical: 20, marginHorizontal: 10 }}>
         <Layout
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
           <Text style={{ fontSize: 24 }}>Now Showing</Text>
           <Text
-            style={{ fontSize: 18, color: "#3567ff" }}
-            onPress={() => navigation.navigate("ViewAll")}
-          >
+            style={{ fontSize: 18, color: '#3567ff' }}
+            onPress={() => navigation.navigate('ViewAll')}>
             view all
           </Text>
         </Layout>
@@ -93,7 +59,7 @@ const NowShowing = ({ navigation }) => {
 const UpComing = ({ navigation }) => {
   const [movies, setMovies] = useState([]);
   const [months, setMonths] = useState([]);
-  const [selectedMonth, setSelectedMonth] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState('');
 
   useEffect(() => {
     fetchMonths();
@@ -103,9 +69,7 @@ const UpComing = ({ navigation }) => {
   useEffect(() => {
     const fetchMovieByMonth = async () => {
       try {
-        const response = await http().get(
-          `/api/v1/movies/upComing?month=${selectedMonth}`
-        );
+        const response = await http().get(`/api/v1/movies/upComing?month=${selectedMonth}`);
         setMovies(response.data.results);
       } catch (error) {
         console.log(error);
@@ -116,7 +80,7 @@ const UpComing = ({ navigation }) => {
 
   const fetchMovies = async () => {
     try {
-      const response = await http().get("/api/v1/movies/upComing");
+      const response = await http().get('/api/v1/movies/upComing');
       setMovies(response.data.results);
     } catch (error) {
       console.log(error);
@@ -125,7 +89,7 @@ const UpComing = ({ navigation }) => {
 
   const fetchMonths = async () => {
     try {
-      const response = await http().get("/api/v1/months");
+      const response = await http().get('/api/v1/months');
       setMonths(response.data.results);
     } catch (error) {
       console.log(error);
@@ -137,16 +101,14 @@ const UpComing = ({ navigation }) => {
       <Layout style={{ marginVertical: 20, marginHorizontal: 10 }}>
         <Layout
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
           <Text style={{ fontSize: 24 }}>Up Coming Movies</Text>
           <Text
-            style={{ fontSize: 18, color: "#3567ff" }}
-            onPress={() => navigation.navigate("ViewAll")}
-          >
+            style={{ fontSize: 18, color: '#3567ff' }}
+            onPress={() => navigation.navigate('ViewAll')}>
             view all
           </Text>
         </Layout>
@@ -155,10 +117,9 @@ const UpComing = ({ navigation }) => {
             <Button
               key={item.id}
               style={{
-                margin: 5,
+                margin: 5
               }}
-              onPress={() => setSelectedMonth(item.id)}
-            >
+              onPress={() => setSelectedMonth(item.id)}>
               {item.name}
             </Button>
           ))}
@@ -174,52 +135,48 @@ const UpComing = ({ navigation }) => {
 };
 
 const SubscribeSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Email is required"),
+  email: Yup.string().email('Invalid email').required('Email is required')
 });
 
 const Subscribe = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty }
   } = useForm({
-    mode: "all",
+    mode: 'all',
     resolver: yupResolver(SubscribeSchema),
     defaultValues: {
-      email: "",
-    },
+      email: ''
+    }
   });
 
   const onSubmit = (data) => {
-    Alert.alert("Form Data", JSON.stringify(data));
+    Alert.alert('Form Data', JSON.stringify(data));
   };
 
   return (
     <Layout
       style={{
-        paddingBottom: 20,
-      }}
-    >
+        paddingBottom: 20
+      }}>
       <Card
         disabled
         wrapperStyle={{
-          paddingHorizontal: 10,
-        }}
-      >
+          paddingHorizontal: 10
+        }}>
         <Text
           style={{
-            textAlign: "center",
-          }}
-        >
+            textAlign: 'center'
+          }}>
           Be the vanguard of the
         </Text>
         <Text
           style={{
             fontSize: 24,
-            textAlign: "center",
-            fontWeight: "bold",
-          }}
-        >
+            textAlign: 'center',
+            fontWeight: 'bold'
+          }}>
           Moviegoers
         </Text>
         <Controller
@@ -238,20 +195,18 @@ const Subscribe = () => {
         />
         <Button
           style={{
-            marginBottom: 10,
+            marginBottom: 10
           }}
           onPress={handleSubmit(onSubmit)}
-          disabled={!isDirty}
-        >
+          disabled={!isDirty}>
           Join now
         </Button>
         <Text
           style={{
-            textAlign: "center",
-          }}
-        >
-          By joining you as a MexL Cinema member, we will always send you the
-          latest updates via email.
+            textAlign: 'center'
+          }}>
+          By joining you as a MexL Cinema member, we will always send you the latest updates via
+          email.
         </Text>
       </Card>
     </Layout>
@@ -261,29 +216,24 @@ const Subscribe = () => {
 const Home = () => {
   const navigation = useNavigation();
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ScrollView>
         <HeaderBar />
         <Layout>
           <Layout
             style={{
               marginVertical: 40,
-              marginHorizontal: 10,
-            }}
-          >
+              marginHorizontal: 10
+            }}>
             <Text style={{ fontSize: 18 }}>Nearest Cinema, Newest Movie,</Text>
-            <Text style={{ fontSize: 30, color: "#3567ff" }}>
-              Find out now!
-            </Text>
+            <Text style={{ fontSize: 30, color: '#3567ff' }}>Find out now!</Text>
             <Image
               source={DashboardImage}
               style={{
                 aspectRatio: 1,
                 height: 400,
                 width: 400,
-                resizeMode: "cover",
+                resizeMode: 'cover'
               }}
             />
           </Layout>

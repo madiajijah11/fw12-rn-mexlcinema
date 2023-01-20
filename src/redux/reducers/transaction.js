@@ -1,22 +1,22 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   movieId: null,
   cinemaId: null,
   bookingDate: null,
   bookingTime: null,
-  seatNum: null,
+  seatNum: null
 };
 
 const transactionSlice = createSlice({
-  name: "transaction",
+  name: 'transaction',
   initialState,
   reducers: {
     chooseMovie: (state, action) => {
       const { movieId, cinemaId, bookingDate, bookingTime } = action.payload;
       state = {
         ...state,
-        ...{ movieId, cinemaId, bookingDate, bookingTime },
+        ...{ movieId, cinemaId, bookingDate, bookingTime }
       };
       return state;
     },
@@ -24,15 +24,14 @@ const transactionSlice = createSlice({
       const { seatNum } = action.payload;
       state = {
         ...state,
-        ...{ seatNum },
+        ...{ seatNum }
       };
       return state;
-    },
+    }
   },
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {}
 });
 
-export const { chooseMovie, choosePayment, chooseSeat } =
-  transactionSlice.actions;
+export const { chooseMovie, choosePayment, chooseSeat } = transactionSlice.actions;
 
 export default transactionSlice.reducer;

@@ -1,14 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getUserInfo } from "../actions/profile";
+import { createSlice } from '@reduxjs/toolkit';
+import { getUserInfo } from '../actions/profile';
 
 const initialState = {
   loading: false,
   userInfo: null,
-  error: null,
+  error: null
 };
 
 const profileSlice = createSlice({
-  name: "profile",
+  name: 'profile',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -23,7 +23,7 @@ const profileSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     });
-  },
+  }
 });
 
 export default profileSlice.reducer;

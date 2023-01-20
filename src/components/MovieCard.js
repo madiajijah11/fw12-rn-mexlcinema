@@ -1,17 +1,16 @@
-import { Image, ListItem } from "@rneui/themed";
-import { Button, Card, Layout, Text } from "@ui-kitten/components";
-import { useNavigation } from "@react-navigation/native";
+import { Image } from '@rneui/themed';
+import { Button, Card, Layout, Text } from '@ui-kitten/components';
+import { useNavigation } from '@react-navigation/native';
 
 const MovieCard = ({ item }) => {
   const navigation = useNavigation();
 
   // limit genre to 3 words
-  const genre = item?.movieGenre?.map((genre) => genre.genres.name).join(", ");
-  const limitGenre = genre?.length > 20 ? genre?.slice(0, 20) + "..." : genre;
+  const genre = item?.movieGenre?.map((genre) => genre.genres.name).join(', ');
+  const limitGenre = genre?.length > 20 ? genre?.slice(0, 20) + '...' : genre;
 
   // limit title to 3 words
-  const limitTitle =
-    item.title?.length > 20 ? item.title?.slice(0, 20) + "..." : item.title;
+  const limitTitle = item.title?.length > 20 ? item.title?.slice(0, 20) + '...' : item.title;
 
   return (
     <Card
@@ -19,17 +18,15 @@ const MovieCard = ({ item }) => {
       key={item.id}
       style={{
         borderWidth: 1,
-        borderColor: "#3567ff",
+        borderColor: '#3567ff',
         marginHorizontal: 5,
-        marginVertical: 10,
-      }}
-    >
+        marginVertical: 10
+      }}>
       <Layout
         style={{
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
         {item.picture ? (
           <Image
             source={{ uri: item.picture }}
@@ -37,7 +34,7 @@ const MovieCard = ({ item }) => {
               width: 120,
               height: 170,
               borderRadius: 5,
-              resizeMode: "contain",
+              resizeMode: 'contain'
             }}
           />
         ) : (
@@ -47,20 +44,19 @@ const MovieCard = ({ item }) => {
               width: 120,
               height: 170,
               borderRadius: 5,
-              resizeMode: "contain",
+              resizeMode: 'contain'
             }}
           />
         )}
-        <Text style={{ fontWeight: "bold", marginTop: 5 }}>
-          {item?.title ? limitTitle : "No Title"}
+        <Text style={{ fontWeight: 'bold', marginTop: 5 }}>
+          {item?.title ? limitTitle : 'No Title'}
         </Text>
         <Text style={{ fontSize: 14, marginBottom: 5 }}>
-          {item?.movieGenre ? limitGenre : "No Genre"}
+          {item?.movieGenre ? limitGenre : 'No Genre'}
         </Text>
         <Button
           appearance="outline"
-          onPress={() => navigation.navigate("MovieDetails", { item: item.id })}
-        >
+          onPress={() => navigation.navigate('MovieDetails', { item: item.id })}>
           Details
         </Button>
       </Layout>

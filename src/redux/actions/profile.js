@@ -1,12 +1,12 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import http from "../../helpers/http";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import http from '../../helpers/http';
 
 export const getUserInfo = createAsyncThunk(
-  "profile/getUserInfo",
+  'profile/getUserInfo',
   async (arg, { getState, rejectWithValue }) => {
     try {
       const { auth } = getState();
-      const { data } = await http(auth.token).get("/api/v1/profile");
+      const { data } = await http(auth.token).get('/api/v1/profile');
       return data.results;
     } catch (error) {
       if (error.response && error.response.data.message) {
