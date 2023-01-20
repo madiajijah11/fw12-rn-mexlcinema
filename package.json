@@ -21,8 +21,10 @@
     "@rneui/themed": "^4.0.0-rc.7",
     "@ui-kitten/components": "^5.1.2",
     "axios": "^1.2.2",
+    "dotenv": "^16.0.3",
     "expo": "~47.0.12",
     "expo-constants": "~14.0.2",
+    "expo-image-picker": "~14.0.2",
     "expo-navigation-bar": "~2.0.1",
     "expo-splash-screen": "~0.17.5",
     "expo-status-bar": "~1.4.2",
@@ -43,8 +45,7 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.2",
     "yup": "^0.32.11",
-    "yup-password": "^0.2.2",
-    "expo-image-picker": "~14.0.2"
+    "yup-password": "^0.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

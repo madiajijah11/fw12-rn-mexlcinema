@@ -119,8 +119,16 @@ const PaymentMethods = () => {
         paymentMethodId: selectedPayment,
         ...values,
       });
-      Alert.alert("Success", data.message);
-      navigation.navigate("History");
+      Alert.alert("Success", data.message, [
+        {
+          text: "OK",
+          onPress: () =>
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "Home" }, { name: "History" }],
+            }),
+        },
+      ]);
     } catch (error) {
       console.log(error);
       Alert.alert("Error", "Something went wrong");

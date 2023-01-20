@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as dotenv from "dotenv";
 
 const http = (token) => {
   const headers = {};
@@ -6,7 +7,7 @@ const http = (token) => {
     headers.authorization = `Bearer ${token}`;
   }
   const instance = axios.create({
-    baseURL: "https://fw12-backend-delta.vercel.app",
+    baseURL: process.env.REACT_APP_API_URL,
     headers,
   });
   return instance;
