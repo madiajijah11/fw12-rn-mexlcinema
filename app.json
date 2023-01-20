@@ -2,7 +2,7 @@
   "expo": {
     "name": "MexL Cinema",
     "slug": "mexl-cinema",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/mexl_cinema-1-edit-removebg.png",
     "userInterfaceStyle": "light",
@@ -14,9 +14,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -27,9 +25,7 @@
         "package": "com.mexlcinema",
         "versionCode": 1
       },
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ],
+      "permissions": ["android.permission.RECORD_AUDIO"],
       "package": "com.mexlcinema"
     },
     "web": {
