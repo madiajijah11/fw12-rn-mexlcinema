@@ -3,17 +3,19 @@
     "version": ">= 3.3.2"
   },
   "build": {
-    "development": {
-      "distribution": "internal",
+    "preview": {
       "android": {
-        "gradleCommand": ":app:assembleDebug"
+        "buildType": "apk"
       },
-      "ios": {
-        "buildConfiguration": "Debug"
+      "env": { "API_URL": "https://fair-lime-elk-hose.cyclic.app" }
+    },
+    "preview2": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
       }
     },
-    "preview": {
-      "distribution": "internal"
+    "preview3": {
+      "developmentClient": true
     },
     "production": {}
   },
